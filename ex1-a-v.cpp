@@ -12,7 +12,10 @@
 int main() {
     const int x = 42;
 
-    /* Fails. Can't reference a const int without a const. */
+    /* Fails. A non-const reference cannot bind to
+     * a const object because it would allow mutation
+     * through the reference.
+     */
     // int& reference = x;
 
     const int& reference = x;

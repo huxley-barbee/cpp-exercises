@@ -25,7 +25,10 @@ int main() {
      * :: is the scope resolution operator.
      * normally, there is a scope qualifier,
      * which could be a struct name or namespace.
-     * no qualifier just means globals.
+     *
+     * When used without a scope qualifier, name lookup
+     * searches the innermost enclosing scope outward,
+     * and only reaches globals if no closer match exists.
      */
     std::cout << ::x << std::endl;
     std::cout << x << std::endl;

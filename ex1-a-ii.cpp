@@ -20,7 +20,7 @@ int main() {
     int *pointer = &value;
 
     /* This should not compile. */
-//    int& references;
+//    int& reference;
 
     int& reference = value;
 
