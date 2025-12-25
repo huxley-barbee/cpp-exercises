@@ -15,16 +15,15 @@ int main() {
     /* std::array is a container class in the C++ Standard Library
      * introduced in C++11
      */
-    std::array<int, 2> array;
+    std::array<int, 2> array = {};
 
-    /* std::array is a container class in the C++ Standard Library
+    /* std::vector is a container class in the C++ Standard Library
      * that implements a dynamic array
      */
-    std::vector<int> vector;
+    std::vector<int> vector(2);
 
     array[1] = 20;
-    vector.push_back(20);
-    vector.push_back(20);
+    vector[1] = 20;
 
     std::cout << array[1] << std::endl;
     std::cout << vector[1] << std::endl;

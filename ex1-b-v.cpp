@@ -13,6 +13,11 @@ int main() {
 
     std::array<int, 5> array = { 1, 2, 3, 4, 5 };
 
+    /**
+     * The initial value controls the result type. 
+     * So it's important to choose 0 for the third arg,
+     * a opposed to 0.0 or something other than 0.
+     */
     int sum = std::accumulate(array.begin(), array.end(), 0);
 
     std::cout << sum << std::endl;

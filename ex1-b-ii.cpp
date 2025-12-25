@@ -24,11 +24,11 @@ int main() {
     unordered_map.emplace(1, 10);
     unordered_map.emplace(2, 20);
 
-    for (auto item : map) {
+    for (const auto& item : map) {
         std::cout << item.first << ": " << item.second << std::endl;
     }
 
-    for (auto item : unordered_map) {
+    for (const auto& item : unordered_map) {
         std::cout << item.first << ": " << item.second << std::endl;
     }
 
