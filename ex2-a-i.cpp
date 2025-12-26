@@ -15,4 +15,6 @@ int main() {
 
     std::cout << stack_var << std::endl;
     std::cout << *heap_var << std::endl;
+
+    delete heap_var;
 }

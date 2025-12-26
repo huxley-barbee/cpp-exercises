@@ -11,6 +11,10 @@
 
 struct Thing {
 
+    /**
+     * Members are public by default.
+     * But nice to be explicit.
+     */
     public: 
         Thing() {
             std::cout << "acquire" << std::endl;

@@ -11,7 +11,14 @@
 
 int main() {
 
-    std::unique_ptr<int> pointer1(new int(42));
+    /**
+     * Modern C++ guidance is very explicit:
+     * “Do not use new directly unless you are implementing
+     * a low-level abstraction.”
+     */
+    // std::unique_ptr<int> pointer1(new int(42));
+    auto pointer1 = std::make_unique<int>(42);
+
     std::unique_ptr<int> pointer2;
 
     std::cout << *pointer1 << std::endl;

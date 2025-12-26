@@ -14,8 +14,7 @@ struct Thing {
         std::string name;
 
     public:
-        Thing(std::string n) {
-            name = n;
+        Thing(std::string n) : name(n) {
             std::cout << "construct " << name << std::endl;
         }
         ~Thing() {

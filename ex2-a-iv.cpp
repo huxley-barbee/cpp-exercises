@@ -13,7 +13,11 @@
 
 int main() {
     int* array = new int[]{1, 2, 3};
-    int max = 3;
+
+    // int max = 3;
+    // constexpr gives us compile-time checks
+    constexpr int size = 3;
+
 
     for (int index = 0; index < max; index++) {
 
