@@ -52,6 +52,8 @@ int main() {
     grades["Bob"] = { 78, 85, 80 };
     grades["Charlie"] = { 92, 88, 95 };
 
+    std::cout << std::setprecision(4);
+
     for (const auto record : grades) {
         std::cout << record.first << ": grades [";
         std::vector<int> scores = record.second;
@@ -67,7 +69,7 @@ int main() {
         int sum = std::accumulate(scores.begin(), scores.end(), 0);
         double average = (double)sum / scores.size();
 
-        std::cout << "], average: " << std::setprecision(4) << average
+        std::cout << "], average: " << average
             << ", highest: "
             << *std::max_element(scores.begin(), scores.end()) << std::endl;
 
