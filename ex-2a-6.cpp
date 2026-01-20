@@ -43,7 +43,7 @@
 
 int main() {
 
-    std::cout << "Creating sahred_ptr" << std::endl;
+    std::cout << "Creating shared_ptr" << std::endl;
 
     std::shared_ptr <int> shared1 = std::make_shared<int>(42);
     std::cout << "Value: " << *shared1 << ", use_count: "
