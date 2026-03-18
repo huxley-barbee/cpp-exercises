@@ -31,20 +31,20 @@ int globalCount = 100;
 void outerFunction() {
     int outerVar = 50;
 
-    std::cout << "Global: " << globalCount << ", Outer: " << outerVar << std::endl;
+    std::cout << "Global: " << globalCount << ", Outer: " << outerVar << '\n';
 
     {
 
         int innerVar = 25;
         int globalCount = 200;
-        std::cout << "Global (shadowed): " << globalCount << ", Outer: " << outerVar << ", Inner: " << innerVar << std::endl;
+        std::cout << "Global (shadowed): " << globalCount << ", Outer: " << outerVar << ", Inner: " << innerVar << '\n';
 
     }
 
-    std::cout << "Global: " << globalCount << ", Outer: " << outerVar << std::endl;
+    std::cout << "Back in outer, Global: " << globalCount << ", Outer: " << outerVar << '\n';
 }
 
 int main() {
     outerFunction();
-    std::cout << "Global: " << globalCount << std::endl;
+    std::cout << "Main sees global: " << globalCount << '\n';
 }

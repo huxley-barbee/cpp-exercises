@@ -31,17 +31,17 @@
 
 int main() {
 
-    std::cout << "sizeof(char)" << sizeof(char) << std::endl;
-    std::cout << "sizeof(short)" << sizeof(short) << std::endl;
-    std::cout << "sizeof(int)" << sizeof(int) << std::endl;
-    std::cout << "sizeof(long)" << sizeof(long) << std::endl;
-    std::cout << "sizeof(long long)" << sizeof(long long) << std::endl;
-    std::cout << "sizeof(float)" << sizeof(float) << std::endl;
-    std::cout << "sizeof(double)" << sizeof(double) << std::endl;
+    std::cout << "sizeof(char): " << sizeof(char) << std::endl;
+    std::cout << "sizeof(short): " << sizeof(short) << std::endl;
+    std::cout << "sizeof(int): " << sizeof(int) << std::endl;
+    std::cout << "sizeof(long): " << sizeof(long) << std::endl;
+    std::cout << "sizeof(long long): " << sizeof(long long) << std::endl;
+    std::cout << "sizeof(float): " << sizeof(float) << std::endl;
+    std::cout << "sizeof(double): " << sizeof(double) << std::endl;
 
-    /* this does not compile. there is an error */
-    //int intFromFloat = 3.7;
-    //std::cout << "int from float is " << intFromFloat << std::endl;
+    /* this compile with warnings. */
+    int intFromFloat = 3.7;
+    std::cout << "int from float is " << intFromFloat << std::endl;
 
     char charFromInt = (char)65;
     std::cout << "charFromInt is " << charFromInt << std::endl;
