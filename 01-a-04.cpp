@@ -34,11 +34,10 @@ int main() {
 
     for (int index = 0; index < 5; index++) {
         std::cout << "Element " << index << ": " << *(pointer+index)
-            << " (address: 0x" << pointer+index << ")" << std::endl;
+            << " (address: " << static_cast<void*>(pointer+index) << ")" << '\n';
     }
 
-    std::cout << "Array address: 0x" << array << std::endl;
-    std::cout << "First element address: " << &array[0] << std::endl;
-    std::cout << "Array size via pointers: " <<&array[5] - &array[0]
-        << std::endl;
+    std::cout << "Array address: " << static_cast<void*>(array) << '\n';
+    std::cout << "First element address: " << static_cast<void*>(&array[0]) << '\n';
+    std::cout << "Array size via pointers: " << &array[5] - &array[0] << '\n';
 }
