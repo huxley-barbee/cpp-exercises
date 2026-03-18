@@ -30,15 +30,18 @@ int main() {
     int& reference = original;
 
     std::cout << "Original: " << original << ", Reference: " << reference
-        << std::endl;
-    std::cout << "After modification via reference:" << std::endl;
+        << '\n';
+    std::cout << "After modification via reference:" << '\n';
 
     reference = 88;
 
     std::cout << "Original: " << original << ", Reference: " << reference
-        << std::endl;
+        << '\n';
 
     const int &const_ref = original;
+
+    std::cout << "Const reference value: " << const_ref << '\n';
+    std::cout << "Reference cannot be reassigned - it's a permanent alias!" << '\n';
     
     /* this fails with
      * error: cannot assign to variable 'const_ref' with const-qualified
@@ -46,4 +49,9 @@ int main() {
      */
     //const_ref = 99;
 
+    int other = 99;
+    reference = other;  // Does NOT rebind ref to other — it sets original = 99
+    // ref still refers to original, not other
+    std::cout << "original: " << original << '\n'; // 99
+    std::cout << "&ref == &original: " << (&reference == &original) << '\n'; // 1
 }
