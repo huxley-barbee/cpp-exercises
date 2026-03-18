@@ -35,10 +35,13 @@ int main() {
     std::cout << "Pointer holds: " << pointer << std::endl;
     std::cout << "Dereferenced pointer: " << *pointer << std::endl;
     *pointer = 100;
+    std::cout << "After modification through pointer" << std::endl;
     std::cout << "Value: " << value << std::endl;
 
-    void *null_pointer = NULL;
+    int *null_pointer = nullptr;
     if (!null_pointer) {
         std::cout << "Nullptr check: Pointer is null, safe!" << std::endl;
     }
+
+    return 0;
 }
