@@ -34,14 +34,14 @@ int main() {
     int variable = 50;
     std::cout << "Variable: " << variable << std::endl;
 
-    const int* ptrToConst = &constantValue;
+    const int* ptrToConst = &variable;
     std::cout << "Pointer to cont points to: " << *ptrToConst << std::endl;
 
     // cannot compile
     // error: read-only variable is not assignable
     //(*ptrToConst)++;
 
-    ptrToConst = &variable;
+    ptrToConst = &constantValue;
     std::cout << "After changing where pointer to const points: "
         << *ptrToConst << std::endl;
 
@@ -55,7 +55,7 @@ int main() {
     // cannot compile
     // error: cannot assign to variable 'constPtr' with const-qualified
     // type 'int *const'
-    //constPtr = constantValue;
+    //constPtr = &constantValue;
 
     const int* const constPtrToConst = &constantValue;
     std::cout << "Const pointer to const: " << *constPtrToConst
