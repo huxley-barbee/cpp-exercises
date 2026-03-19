@@ -29,17 +29,18 @@
  */ 
 
 #include <iostream>
+#include <iomanip>
 
 namespace Temperature {
     const double ABSOLUTE_ZERO = -273.15;
 
     double celsiusToFahrenheit(const double& celsius) {
-        return (celsius/5*9)+32;
+        return ( celsius * 9.0 / 5.0 ) + 32.0;
     }
 
     void convertAndDisplay(double temp) {
-        std::cout << temp << "°C = " << celsiusToFahrenheit(temp) << "°F"
-            << std::endl;
+        std::cout << std::fixed << std::setprecision(2) << temp <<
+            "°C = " << celsiusToFahrenheit(temp) << "°F" << '\n';
     }
 
     void convertAndDisplay(const double* temperatures, int size) {
@@ -54,10 +55,12 @@ int main() {
 
     double array[] = { 0.0, 100.0, -40.0 };
 
+    std::cout << "Converting array of temperatures:\n";
     Temperature::convertAndDisplay(array, 3);
 
+    std::cout << "Converting single temperature:\n";
     Temperature::convertAndDisplay(37.0);
 
-    Temperature::convertAndDisplay(Temperature::ABSOLUTE_ZERO);
+    std::cout << "Absolute zero in Celsius: " << Temperature::ABSOLUTE_ZERO << '\n';
 
 }
