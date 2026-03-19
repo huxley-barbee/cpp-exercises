@@ -30,15 +30,13 @@ class Counter {
         int count;
 
     public:
-        Counter(int num) {
-            count = num;
-        }
+        Counter(int num) : count(num) { }
 
         void increment() {
             count++;
         }
 
-        int getCount() const {
+        int getValue() const {
             return count;
         }
 
@@ -53,21 +51,26 @@ class Counter {
 int main() {
 
     const Counter* roCounter = new Counter(10);
-
-    // can't compile
-    // error: 'this' argument to member function 'increment' has type
-    // 'const Counter', but function is not marked const
-    // roCounter->increment();
-
-    std::cout << "Const counter incremented: " << roCounter->getCount()
-        << std::endl;
-
     Counter* rwCounter = new Counter(5);
 
     rwCounter->increment();
     rwCounter->tryModify();
 
-    std::cout << "Non-const counter incremented: " << rwCounter->getCount()
+    std::cout << "Non-const counter incremented: " << rwCounter->getValue()
+        << std::endl;
+    std::cout << "Non-const counter value: " << rwCounter->getValue()
         << std::endl;
 
+
+    // can't compile
+    // error: 'this' argument to member function 'increment' has type
+    // 'const Counter', but function is not marked const
+    // roCounter->increment();
+    //
+    std::cout << "Const counter value: " << roCounter->getValue()
+        << std::endl;
+
+
+    delete roCounter;
+    delete rwCounter;
 }
