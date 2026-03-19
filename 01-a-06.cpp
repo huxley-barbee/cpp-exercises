@@ -26,31 +26,35 @@
 #include <iostream>
 
 void passByValue(int x) {
+    // x is a local copy; the original variable is unaffected
     x *= 2;
 }
 
-void passByPointer(int *x) {
+void passByPointer(int* x) {
+    // dereferences the pointer to modify the value at that memory address
     *x *= 2;
 }
 
 void passByReference(int& x) {
+    // x is an alias for the original variable; modifies it directly
     x *= 2;
 }
 
 int main() {
 
     int num = 10;
+    std::cout << "Initial value: " << num << '\n'; // add this
 
     passByValue(num);
     std::cout << "After pass by value " << num << " (unchanged)"
-        << std::endl;
+        << '\n';
 
     passByPointer(&num);
     std::cout << "After pass by pointer " << num << " (changed)"
-        << std::endl;
+        << '\n';
 
     passByReference(num);
     std::cout << "After pass by reference " << num << " (changed)"
-        << std::endl;
+        << '\n';
 
 }
