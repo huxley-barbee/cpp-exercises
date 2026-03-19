@@ -34,7 +34,7 @@ void display(const char *s) {
 }
 
 void display(int num1, int num2) {
-    std::cout << "Two Integer: " << num1 << ", " << num2 << std::endl;
+    std::cout << "Two Integers: " << num1 << ", " << num2 << std::endl;
 }
 
 int main () {
