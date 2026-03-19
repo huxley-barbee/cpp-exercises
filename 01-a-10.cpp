@@ -51,9 +51,9 @@ int main() {
     std::cout << "Math::add(5, 3): " << Math::add(5, 3) << std::endl;
     std::cout << "Physics::add(5.5, 3.2): " << Physics::add(5.5, 3.2)
         << std::endl;
-    std::cout << "Math::multiply(4, 7): " << Physics::multiply(4, 7)
+    std::cout << "Math::multiply(4, 7): " << Math::multiply(4, 7)
         << std::endl;
-    std::cout << "add(10, 20): " << add(10, 20) << std::endl;
-    std::cout << "multiply(2.5, 4.0): " << multiply(2.5, 4.0) << std::endl;
-    std::cout << "M::add(100, 50): " << M::add(100, 50) << std::endl;
+    std::cout << "Using declaration - add(10, 20): " << add(10, 20) << std::endl;
+    std::cout << "Using namespace - multiply(2.5, 4.0): " << multiply(2.5, 4.0) << std::endl;
+    std::cout << "Namespace alias M::add(100, 50): " << M::add(100, 50) << std::endl;
 }
