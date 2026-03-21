@@ -26,42 +26,41 @@
  * ```
  */ 
 
-#include <array>
 #include <iostream>
 #include <vector>
 
 int main() {
 
-    std::vector<int> vector(0);
+    std::vector<int> numbers;
 
-    vector.push_back(10);
-    vector.push_back(20);
-    vector.push_back(30);
-    vector.push_back(40);
-    vector.push_back(50);
+    numbers.push_back(10);
+    numbers.push_back(20);
+    numbers.push_back(30);
+    numbers.push_back(40);
+    numbers.push_back(50);
 
-    std::cout << "Size: " << vector.size() << ", Capacity: "
-        << vector.capacity() << std::endl;
+    std::cout << "Size: " << numbers.size() << ", Capacity: "
+        << numbers.capacity() << '\n';
 
-    std::cout << "Element at index 0: " << vector[0] << std::endl;
-    std::cout << "Element at index 2: " << vector.at(2) << std::endl;
+    std::cout << "Element at index 0: " << numbers[0] << '\n';
+    std::cout << "Element at index 2 (before): " << numbers.at(2) << '\n';
 
-    vector[2] = 99;
+    numbers[2] = 99;
 
-    std::cout << "Element at index 2: " << vector.at(2) << std::endl;
+    std::cout << "Element at index 2 (after): " << numbers.at(2) << '\n';
 
-    vector.pop_back();
+    numbers.pop_back();
 
-    std::cout << "After pop_back, size(): " << vector.size() << std::endl;
+    std::cout << "After pop_back, size(): " << numbers.size() << '\n';
 
     std::cout << "Elements: ";
-    for (auto item : vector) {
+    for (auto item : numbers) {
         std::cout << item << " ";
     }
-    std::cout << std::endl;
+    std::cout << '\n';
 
-    vector.clear();
+    numbers.clear();
 
-    std::cout << "After clear, size: " << vector.size() << ", empty "
-        << vector.empty() << std::endl;
+    std::cout << "After clear, size: " << numbers.size() << ", empty "
+        << std::boolalpha << numbers.empty() << '\n';
 }

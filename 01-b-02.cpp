@@ -31,32 +31,32 @@
 
 int main() {
 
-    std::vector<int> vector(0);
+    std::vector<int> numbers;
 
-    vector.reserve(10);
+    numbers.reserve(10);
 
-    std::cout << "Initial capacity after reserve(10): " << vector.capacity()
+    std::cout << "Initial capacity after reserve(10): " << numbers.capacity()
         << std::endl;
 
     for (int index = 0; index < 5; index++) {
-        vector.push_back(15);
+        numbers.push_back(15);
         std::cout << "After adding element " << index+1 << ", capacity: "
-            << vector.capacity() << std::endl;
+            << numbers.capacity() << std::endl;
     }
 
     for (int index = 0; index < 10; index++) {
-        vector.push_back(47);
+        numbers.push_back(47);
     }
 
-    std::cout << "After adding 10 more elements" << std::endl;
+    std::cout << "After adding 10 more elements:" << std::endl;
 
-    std::cout << "Size: " << vector.size() << ", Capacity: "
-        << vector.capacity() << std::endl;
+    std::cout << "Size: " << numbers.size() << ", Capacity: "
+        << numbers.capacity() << std::endl;
 
-    vector.shrink_to_fit();
+    numbers.shrink_to_fit();
 
-    std::cout << "After shrink to fit" << std::endl;
-    std::cout << "Size: " << vector.size() << ", Capacity: "
-        << vector.capacity() << std::endl;
+    std::cout << "After shrink_to_fit:" << std::endl;
+    std::cout << "Size: " << numbers.size() << ", Capacity: "
+        << numbers.capacity() << std::endl;
 
 }
