@@ -49,7 +49,7 @@ int main() {
 
     std::cout << "Word frequencies (unordered):" << std::endl;
 
-    for (const auto record : map) {
+    for (const auto& record : map) {
         std::cout << record.first << ": " << record.second << std::endl;
     }
 
@@ -65,12 +65,12 @@ int main() {
 
     std::map<std::string, int> ordered_map;
 
-    for (const auto record : map) {
+    for (const auto& record : map) {
         ordered_map[record.first] = record.second;
     }
 
     std::cout << "Same data in std::map (ordered):" << std::endl;
-    for (const auto record : ordered_map) {
+    for (const auto& record : ordered_map) {
         std::cout << record.first << ": " << record.second << std::endl;
     }
 }
