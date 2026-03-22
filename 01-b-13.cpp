@@ -52,9 +52,12 @@ int main() {
     grades["Bob"] = { 78, 85, 80 };
     grades["Charlie"] = { 92, 88, 95 };
 
-    std::cout << std::setprecision(4);
+    std::cout << std::fixed << std::setprecision(2);
 
-    for (const auto record : grades) {
+    std::cout << "=== Student Grade Management System ===" << std::endl;
+    std::cout << "\nAll Students:" << std::endl;
+
+    for (const auto& record : grades) {
         std::cout << record.first << ": grades [";
         std::vector<int> scores = record.second;
         bool first = true;
@@ -78,12 +81,13 @@ int main() {
 
 
     std::sort(studentsAndAverages.begin(), studentsAndAverages.end(),
-        [](const std::pair<std::string, int> &a,
-            const std::pair<std::string, int> &b) {
+        [](const std::pair<std::string, double> &a,
+            const std::pair<std::string, double> &b) {
             return a.second > b.second;
         }
     );
 
+    std::cout << std::endl;
     std::cout << "Students sorted by average (descending):" << std::endl;
     int index = 1;
     for (const auto& student : studentsAndAverages) {
@@ -92,21 +96,22 @@ int main() {
         index++;
     }
 
+    std::cout << std::endl;
     std::cout << "Students with average > 85:" << std::endl;
     for (const auto& student : studentsAndAverages) {
-        if ( student.second < 85 ) {
+        if ( student.second <= 85 ) {
             continue;
         }
-        std::cout << "- " << student.first << "(" << student.second
+        std::cout << "- " << student.first << " (" << student.second
             << ")" << std::endl;
     }
 
     std::cout << "Total students: " << grades.size() << std::endl;
 
     int totalGrades = 0;
-    for (const auto &scores : grades) {
+    for (const auto& scores : grades) {
         totalGrades += scores.second.size();
     }
 
     std::cout << "Total grades recorded: " << totalGrades << std::endl;
-}
+} 
