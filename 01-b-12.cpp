@@ -29,6 +29,7 @@
 #include <iostream>
 #include <numeric>
 #include <vector>
+#include <algorithm>
 
 void print(std::vector<int> vector) {
 
@@ -41,8 +42,9 @@ void print(std::vector<int> vector) {
 
 int gen() {
     static int count = 0;
+    int returnValue = count * 2;
     count++;
-    return count * (count - 1);
+    return returnValue;
 }
 
 int main() {
@@ -73,7 +75,7 @@ int main() {
     std::cout << "After unique: ";
     print(three);
 
-    std::partition(merged.begin(), merged.end(),
+    std::stable_partition(merged.begin(), merged.end(),
         [](int a) {
             return (a%2)==0;
         }
@@ -83,15 +85,10 @@ int main() {
     print(merged);
 
     std::vector<int> four = { 3, 1, 4, 1, 5, 9, 2, 6, 5 };
-    int middle = -1;
-    if (four.size() % 2 == 0) {
-        middle = four.size() / 2;
-    } else {
-        middle = (four.size() / 2) + 1;
-    }
+    size_t middle = four.size() / 2;
     std::nth_element(four.begin(), four.begin() + middle, four.end());
 
-    std::cout << "After nth_element (median at index 4: "
+    std::cout << "After nth_element (median at index 4): "
         << four[middle] << std::endl;
 
     std::vector<int> five(5);
