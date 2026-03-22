@@ -28,10 +28,11 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
-void print(std::vector<int> vector) {
+void print(const std::vector<int>& numbers) {
 
-    for (const auto& item : vector) {
+    for (const auto& item : numbers) {
         std::cout << item << " ";
     }
     std::cout << std::endl;
@@ -39,35 +40,44 @@ void print(std::vector<int> vector) {
 }
 
 int main() {
-    std::vector<int> vector = { 5, 2, 8, 1, 9, 3, 7 };
+    std::vector<int> numbers = { 5, 2, 8, 1, 9, 3, 7 };
 
     std::cout << "Original: ";
-    print(vector);
+    print(numbers);
 
-    std::sort(vector.begin(), vector.end());
+    std::sort(numbers.begin(), numbers.end());
     std::cout << "After sort: ";
-    print(vector);
+    print(numbers);
 
-    const auto& firstEight = std::find(vector.begin(), vector.end(), 8);
-    std::cout << "Finding 8: found at index "
-        << std::distance(vector.begin(), firstEight) << std::endl;
+    /**
+     * Objects/containers → const& to avoid expensive copies
+     * Iterators, pointers, simple scalars → pass/store by value
+     */
+    auto firstEight = std::find(numbers.begin(), numbers.end(), 8);
+    if (firstEight != numbers.end()) {
+        std::cout << "Finding 8: found at index "
+            << std::distance(numbers.begin(), firstEight) << std::endl;
+    } else {
+        std::cout << "Eight not found" << std::endl;
+    }
 
-    if (std::binary_search(vector.begin(), vector.end(), 5)) {
+    if (std::binary_search(numbers.begin(), numbers.end(), 5)) {
         std::cout << "Binar search for 5: found" << std::endl;
     }
 
-    if (!std::binary_search(vector.begin(), vector.end(), 4)) {
+    if (!std::binary_search(numbers.begin(), numbers.end(), 4)) {
         std::cout << "Binar search for 4: not found" << std::endl;
     }
 
     std::cout << "Count of 2: "
-        << std::count(vector.begin(), vector.end(), 2) << std::endl;
+        << std::count(numbers.begin(), numbers.end(), 2) << std::endl;
 
     std::cout << "Min element: "
-        << *std::min_element(vector.begin(), vector.end()) << std::endl;
+        << *std::min_element(numbers.begin(), numbers.end()) << std::endl;
     std::cout << "Max element: "
-        << *std::max_element(vector.begin(), vector.end()) << std::endl;
+        << *std::max_element(numbers.begin(), numbers.end()) << std::endl;
 
-    std::reverse(vector.begin(), vector.end());
-    print(vector);
+    std::reverse(numbers.begin(), numbers.end());
+    std::cout << "After reverse: ";
+    print(numbers);
 }
