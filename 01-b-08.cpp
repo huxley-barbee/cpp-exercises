@@ -29,46 +29,76 @@
 
 int main() {
 
-    std::vector<int> vector = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-    std::cout << "Forward iteration" << std::endl;
-    for (auto it = vector.begin(); it != vector.end(); it++) {
-        std::cout << *it << " ";
+    std::cout << "Forward iteration: ";
+
+    /** 
+     * Prefer pre-increment (++it) for iterators.
+     * Post-increment creates an unnecessary temporary copy of the iterator.
+     */
+    /* here it is "iterator" */
+    for (auto it = numbers.cbegin(); it != numbers.cend(); ++it) {
+        if (it != numbers.cbegin()) {
+            std::cout << " ";
+        }
+        std::cout << *it;
     }
     std::cout << std::endl;
 
-    std::cout << "Reverse iteration" << std::endl;
-    for (auto it = vector.rbegin(); it != vector.rend(); it++) {
-        std::cout << *it << " ";
+    std::cout << "Reverse iteration: ";
+    /* here it is "iterator" */
+    for (auto it = numbers.rbegin(); it != numbers.rend(); ++it) {
+        if (it != numbers.rbegin()) {
+            std::cout << " ";
+        }
+        std::cout << *it;
     }
     std::cout << std::endl;
 
-    std::cout << "Element at begin()+3: " << *(vector.begin() + 3)
+    std::cout << "Element at begin() + 3: " << *(numbers.begin() + 3)
         << std::endl;
 
-    auto it = vector.begin();
+    auto it = numbers.begin();
     std::advance(it, 5);
-    std::cout << "After advancing by 5 from beging(): " << *it << std::endl;
+    std::cout << "After advancing by 5 from begin(): " << *it << std::endl;
 
-    std::cout << "Using const iteration" << std::endl;
-    for (const auto& it : vector) {
-        std::cout << it << " ";
+    std::cout << "Using const_iterator: ";
+    /* here it is "item" */
+    bool first = true;
+    for (const auto& it : numbers) {
+        if (!first) {
+            std::cout << " " ;
+        }
+        first = false;
+        std::cout << it;
     }
     std::cout << std::endl;
 
-    vector.insert(vector.begin()+3, 99);
+    numbers.insert(numbers.begin()+3, 99);
 
-    std::cout << "After inserting 99 at position 3" << std::endl;
-    for (const auto& it : vector) {
-        std::cout << it << " ";
+    std::cout << "After inserting 99 at position 3: ";
+    /* here it is "item" */
+    first = true;
+    for (const auto& it : numbers) {
+        if (!first) {
+            std::cout << " " ;
+        }
+        first = false;
+        std::cout << it;
     }
     std::cout << std::endl;
 
-    vector.erase(vector.begin()+5);
+    numbers.erase(numbers.begin()+5);
 
-    std::cout << "After erasing element at  position 5" << std::endl;
-    for (const auto& it : vector) {
-        std::cout << it << " ";
+    std::cout << "After erasing element at  position 5: ";
+    first = true;
+    for (const auto& it : numbers) {
+        if (!first) {
+            std::cout << " " ;
+        }
+        first = false;
+        std::cout << it;
     }
     std::cout << std::endl;
 }
