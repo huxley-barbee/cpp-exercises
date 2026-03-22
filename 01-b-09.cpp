@@ -32,41 +32,60 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <cctype>
 
 int main() {
 
-    std::vector<std::string> vector = { "one", "two", "three" };
+    std::vector<std::string> numbers = { "one", "two", "three" };
 
-    std::cout << "Iterating by value" << std::endl;
-    for (auto it : vector) {
+    std::cout << "Iterating by value:" << std::endl;
+    for (auto it : numbers) {
         std::cout << it << " ";
     }
     std::cout << std::endl;
 
-    std::cout << "Iterating by const reference" << std::endl;
-    for (const auto& it : vector) {
+    std::cout << "Iterating by const reference:" << std::endl;
+    for (const auto& it : numbers) {
         std::cout << it << " ";
     }
     std::cout << std::endl;
 
-    std::cout << "Modifying via by reference (converting to uppercase)"
+    std::cout << "Modifying via by reference (converting to uppercase):"
         << std::endl;
-    for (auto& it : vector) {
-        for (int index = 0; index < it.size(); index++) {
-            it[index] -= 32;
+    std::cout << "Before: ";
+    bool first = true;
+    for (const auto& it : numbers) {
+        if (!first) {
+            std::cout << " ";
         }
-        std::cout << it << " ";
+        first = false;
+        std::cout << it;
     }
     std::cout << std::endl;
 
-    std::map<std::string, int> map;
-    map["Alice"] = 25;
-    map["Bob"] = 30;
-    map["Charlie"] = 35;
+    std::cout << "After: ";
+    first = true;
+    for (auto& it : numbers) {
+        for (auto& ch : it) {
+            ch = std::toupper(static_cast<unsigned char>(ch));
+        }
+
+        if (!first) {
+            std::cout << " ";
+        }
+        first = false;
+        std::cout << it;
+    }
+    std::cout << std::endl;
+
+    std::map<std::string, int> ages;
+    ages["Alice"] = 25;
+    ages["Bob"] = 30;
+    ages["Charlie"] = 35;
 
     std::cout << "Iterating through maps with structure bindings:"
         << std::endl;
-    for (const auto& [name, age] : map) {
+    for (const auto& [name, age] : ages) {
         std::cout << name << ": " << age << std::endl;
     }
 
