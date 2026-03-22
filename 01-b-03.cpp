@@ -25,16 +25,21 @@
 
 #include <array>
 #include <iostream>
-#include <type_traits>
 
 int main() {
 
-    std::array<int, 5> array = { 1, 2, 3, 4, 5};
+    /*
+     * array.size() is constexpr in C++17+.
+     * Use constexpr, to ensure the static_assert below works as expected.
+     */
+    constexpr std::size_t N = 5;
+    std::array<int, N> array = {1, 2, 3, 4, 5};
+    static_assert(array.size()  == 5, "Array size must be 5");
 
     std::cout << "Array size: " << array.size() << std::endl;
 
-    std::cout << "Element at index 2: " << array.at(2) << std::endl;
-    std::cout << "Element at index 2: " << array[2] << std::endl;
+    std::cout << "Element at index 2 (at()): " << array.at(2) << std::endl;
+    std::cout << "Element at index 2 ([]): " << array[2] << std::endl;
 
     std::cout << "Front: " << array.front() << ", Back: "
         << array.back() << std::endl;
@@ -47,9 +52,9 @@ int main() {
 
     std::cout << std::endl;
 
-    static_assert(array.size()  == 5, "Array size must be 5");
 
     try {
+        std::cout << "Trying to access index 10 with at():" << std::endl;
         array.at(10);
     } catch (const std::out_of_range& e) {
         std::cout << "Exception caught: out_of_range" << std::endl;
