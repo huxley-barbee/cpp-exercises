@@ -26,41 +26,50 @@
 #include <numeric>
 #include <vector>
 
-void print(std::vector<int> vector) {
+void print(const std::vector<int>& numbers) {
 
-    for (const auto& item : vector) {
-        std::cout << item << " ";
+    bool first = true;
+    for (const auto& item : numbers) {
+        if (!first) {
+            std::cout << " ";
+        }
+        first = false;
+        std::cout << item;
     }
     std::cout << std::endl;
 
 }
 
 int main() {
-    std::vector<int> vector = { 1, 2, 3, 4, 5 };
+    std::vector<int> numbers = { 1, 2, 3, 4, 5 };
 
     std::cout << "Original: ";
-    print(vector);
+    print(numbers);
 
-    std::transform(vector.begin(), vector.end(), vector.begin(),
+    std::transform(numbers.begin(), numbers.end(), numbers.begin(),
         [](int a) {
             return a * a;
         }
     );
 
     std::cout << "After transform (square): ";
-    print(vector);
+    print(numbers);
 
     std::cout << "Using for_each to print: ";
-    std::for_each(vector.begin(), vector.end(), 
-        [](int a) {
-            std::cout << a << " ";
+    std::for_each(numbers.begin(), numbers.end(), 
+        [first = true](int a) mutable{
+            if (!first) {
+                std::cout << " ";
+            }
+            first = false;
+            std::cout << a;
         }
     );
-    std::cout << std::endl;;
+    std::cout << std::endl;
 
-    std::vector<int> second(vector.size());
+    std::vector<int> second;
 
-    std::copy_if(vector.begin(), vector.end(), second.begin(),
+    std::copy_if(numbers.begin(), numbers.end(), std::back_inserter(second),
             [](int a) {
                 return (a % 2) == 0;
             }
@@ -70,16 +79,16 @@ int main() {
     print(second);
 
     std::cout << "Sum using accumulate: "
-        << std::accumulate(vector.begin(), vector.end(), 0) << std::endl;
+        << std::accumulate(numbers.begin(), numbers.end(), 0) << std::endl;
 
-    auto odds = std::remove_if(vector.begin(), vector.end(),
+    auto odds = std::remove_if(numbers.begin(), numbers.end(),
         [](int a) {
             return (a % 2) != 0;
         }
     );
-    vector.erase(odds, vector.end());
+    numbers.erase(odds, numbers.end());
 
     std::cout << "After removing odds: ";
-    print(vector);
+    print(numbers);
 
 }
