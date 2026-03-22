@@ -47,11 +47,12 @@ int main() {
     std::cout << "David's phone (auto-created): " << map["David"]
         << std::endl;
 
-    if (map.find("Eve") != map.end()) {
+    if (map.find("Eve") == map.end()) {
         std::cout << "Eve found: No" <<  std::endl;
     }
 
-    for (const auto record : map) {
+    std::cout << "Phone book (alphabetically ordered):" << std::endl;
+    for (const auto& record : map) {
         std::cout << record.first << ": " << record.second << std::endl;
     }
 
@@ -59,7 +60,7 @@ int main() {
 
     std::cout << "After erasing Charlie:" << std::endl;
 
-    for (const auto record : map) {
+    for (const auto& record : map) {
         std::cout << record.first << ": " << record.second << std::endl;
     }
 
