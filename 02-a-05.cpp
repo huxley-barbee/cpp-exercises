@@ -53,9 +53,7 @@ int main() {
     std::cout << "Transferring ownership via move" << std::endl;
     std::unique_ptr<int> pointer2;
     pointer2 = std::move(pointer1);
-    if ( pointer1 == NULL ) {
-        std::cout << "Original ptr is now null: true" << std::endl;
-    }
+    std::cout << "Original ptr is now null: " << std::boolalpha << !pointer1 << std::endl;
     std::cout << "New ptr value: " << *pointer2 << std::endl;
 
     std::cout << std::endl;
@@ -75,10 +73,11 @@ int main() {
     std::cout << std::endl;
 
     std::cout << "unique_ptr returned from factory functoin" << std::endl;
-    std::cout << "Created object value: " << *pointer_factory()
-        << std::endl;;
+    auto pointer4 = pointer_factory();
+    std::cout << "Created object value: " << *pointer4 << std::endl;;
 
     std::cout << std::endl;
 
+    std::cout << "Automatic cleanup - no delete needed!" << std::endl;
     std::cout << "All unique_ptrs destroyed automatically" << std::endl;
 }

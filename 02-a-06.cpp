@@ -48,30 +48,33 @@ int main() {
     std::shared_ptr <int> shared1 = std::make_shared<int>(42);
     std::cout << "Value: " << *shared1 << ", use_count: "
         << shared1.use_count() << std::endl;
+    std::cout << std::endl;
 
     std::cout << "Creating second shared_ptr (copy)" << std::endl;
     std::shared_ptr<int> shared2 = shared1;
     std::cout << "Value: " << *shared2 << ", use_count: "
         << shared2.use_count() << std::endl;
+    std::cout << std::endl;
 
-    std::cout << "Creating third shared_ptr (copy)" << std::endl;
+    std::cout << "Creating third shared_ptr" << std::endl;
     std::shared_ptr<int> shared3 = shared1;
     std::cout << "Value: " << *shared3 << ", use_count: "
         << shared3.use_count() << std::endl;
+    std::cout << std::endl;
 
-    std::cout << "Creating weak_ptr (doesn't increase cont)" << std::endl;
+    std::cout << "Creating weak_ptr (doesn't increase count)" << std::endl;
     std::weak_ptr<int> weak1 = shared1;
     std::cout << "use_count still: " << weak1.use_count() << std::endl;
-    if ( !weak1.expired() ) {
-        std::cout << "weak_ptr expired: false" << std::endl;
-    }
+    std::cout << "weak_ptr expired: " << std::boolalpha << weak1.expired() << std::endl;
+    std::cout << std::endl;
 
     if ( auto shared_from_lock = weak1.lock() ) {
         std::cout << "Locking weak_ptr to access value : "
             << *shared_from_lock << std::endl;
     }
+    std::cout << std::endl;
 
-    std::cout << "Destroying shared ptrs..." << std::endl;
+    std::cout << "Destroying shared_ptrs..." << std::endl;
     shared3.reset();
     std::cout << "After destroying one, use_count: " << shared1.use_count()
         << std::endl;
@@ -79,13 +82,14 @@ int main() {
     std::cout << "After destroying another, use_count: "
         << shared1.use_count() << std::endl;
     shared1.reset();
-    std::cout << "After destroying last, object deleted." << std::endl;
+    std::cout << "After destroying last, object deleted" << std::endl;
+    std::cout << std::endl;
 
-    std::cout << "weak_ptr now expired: " << weak1.expired()
+    std::cout << "weak_ptr now expired: " << std::boolalpha << weak1.expired()
         << std::endl;
 
     auto attempt = weak1.lock();
-    std::cout << "Attempting to lock expired weak_ptr: " << attempt
-        << std::endl;
+    std::cout << "Attempting to lock expired weak_ptr: " <<
+        (attempt ? std::to_string(*attempt) : "null") << std::endl;
 
 }

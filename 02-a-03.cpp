@@ -44,24 +44,35 @@ class FileHandle {
         std::string name;
 
     public:
-        FileHandle(std::string filename) {
-            name = filename;
+        FileHandle(std::string filename) : name(std::move(filename)) {
             std::cout << "FileHandle: Opening " << name << std::endl;
-            myfile.open(filename);
+            myfile.open(name);
+            if (!myfile.is_open()) {
+                throw std::runtime_error("Failed to open file: " + name);
+            }
         }
 
-        void write(std::string data) {
+        void write(const std::string& data) {
             std::cout << "Writing via RAII" << std::endl;
             myfile << data;
+            if (!myfile.good()) {
+                throw std::runtime_error("Write failed: " + name);
+            }
         }
 
-        void writeException(std::string data) {
+        void simulateException(const std::string& data) {
+            myfile << data;
+            if (!myfile.good()) {
+                throw std::runtime_error("Write failed: " + name);
+            }
             throw std::runtime_error("simulated error");
-
         }
 
         ~FileHandle() {
-            std::cout << "FileHandle: Closing " << name << " (automatic)"
+            const char* tag = std::uncaught_exceptions() > 0
+                ? "(cleanup guaranteed!)"
+                : "(automatic)";
+            std::cout << "FileHandle: Closing " << name << " " << tag
                 << std::endl;
             myfile.close();
         }
@@ -92,7 +103,7 @@ int main() {
         std::cout << "=== RAII File Handling  With Exception ==="
             << std::endl;
         FileHandle handle2("ex2a3-raii-exception.txt");
-        handle2.writeException("blah 123");
+        handle2.simulateException("blah 123");
     } catch(const std::runtime_error& e) {
         std::cout << "Caught exception" << std::endl;
     }

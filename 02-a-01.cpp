@@ -43,33 +43,47 @@ int main() {
         heap_addr = heap_value;
         *heap_value = 100;
 
-        std::cout << "Stack variable address: " << &stack_value << std::endl;
+        std::cout << "Stack variable address: " << static_cast<void*>(&stack_value)
+            << std::endl;
         std::cout << "Stack variable value: " << stack_value << std::endl;
-        std::cout << "Heap variable address: " << heap_value << std::endl;
+        std::cout << "Heap variable address: " << static_cast<void*>(heap_value)
+            << std::endl;
         std::cout << "Heap variable value: " << *heap_value << std::endl;
 
         delete heap_value;
     }
 
     int stack[] = { 1, 2, 3, 4, 5 };
-    int* heap = new int[]{ 10, 20, 30, 40, 50 };
+    int* heap = new int[5]{ 10, 20, 30, 40, 50 };
 
     std::cout << "Stack array: [";
     for (const auto item : stack) {
         std::cout << item << " ";
     }
-    std::cout << "]" << std::endl;;
-    std::cout << "Stack array address: ";
+    std::cout << "]" << std::endl;
+    std::cout << "Stack array address: [";
     for (int index = 0; index < 5; index++) {
-        std::cout << "0x" << &stack[index] << " ";
+        std::cout << static_cast<void*>(&stack[index]) << " ";
     }
-    std::cout << "]" << std::endl;;
+    std::cout << "]" << std::endl;
 
     std::cout << "Heap array: [";
     for (int index = 0; index < 5; index++) {
-        std::cout << "0x" << heap+index << " ";
+        std::cout << *(heap+index) << " ";
     }
-    std::cout << "]" << std::endl;;
+    std::cout << "]" << std::endl;
+
+    std::cout << "Heap array address: [";
+    for (int index = 0; index < 5; index++) {
+        std::cout << static_cast<void*>(heap+index) << " ";
+    }
+    std::cout << "]" << std::endl;
+
+    if (stack_addr > heap_addr) {
+        std::cout << "Stack is at higher address than heap" << std::endl;
+    } else {
+        std::cout << "Heap is at higher address than stack" << std::endl;
+    }
 
     std::cout << "Cleaning up heap memory..." << std::endl;
     delete[] heap;

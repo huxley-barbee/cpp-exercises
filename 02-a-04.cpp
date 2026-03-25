@@ -43,17 +43,17 @@ class LockGuard {
 
     private:
         static inline int counter = 0;
+        int id;
 
     public:
-        LockGuard() {
-            counter++;
-            std::cout << "LockGuard: Acquired Resource " << counter
+        LockGuard() : id(++counter) {
+            std::cout << "LockGuard: Acquired Resource " << id
                 << std::endl;
             std::cout << "Active resources: " << counter << std::endl;
         }
 
         ~LockGuard() {
-            std::cout << "LockGuard: Released Resource " << counter
+            std::cout << "LockGuard: Released Resource " << id
                 << std::endl;
             counter--;
             std::cout << "Active resources: " << counter << std::endl;
@@ -81,5 +81,7 @@ int main() {
 
     }
     std::cout << std::endl;
+
+    std::cout << "All resources properly released in LIFO order!" << std::endl;
 
 }

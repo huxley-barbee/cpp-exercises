@@ -32,6 +32,9 @@
 #include <iostream>
 
 void outerFunction() {
+
+    std::cout << "Entering outerFunction()" << std::endl;
+
     int x = 10;
 
     std::cout << "Local variable x: " << x << std::endl;
@@ -43,7 +46,7 @@ void outerFunction() {
         int x = 30;
 
         std::cout << "Inner variable y: " << y << std::endl;
-        std::cout << "Shadowed y: " << x << std::endl;
+        std::cout << "Shadowed x: " << x << std::endl;
 
         std::cout << "Exiting inner scope (y destroyed)" << std::endl;
 
@@ -62,14 +65,17 @@ int main() {
 
     outerFunction();
 
+    std::cout << "\nHeap allocation persists across function calls" << std::endl;
+
     int *heap_value = heapFunction();
 
     std::cout << "Heap value from function: " << *heap_value << std::endl;
-    std::cout << "Matches 999: " << (*heap_value == 999) << std::endl;
 
     delete heap_value;
+    std::cout << "Properly cleaned up" << std::endl;
 
-    std::cout << "Heap value from function: " << *heap_value << std::endl;
-    std::cout << "Does not match 999: " << (*heap_value != 999) << std::endl;
+    std::cout << "\nWARNING: Dangling pointer example (commented out - would crash)"
+        << std::endl;
+    // std::cout << "Heap value from function: " << *heap_value << std::endl;
 
 }
