@@ -55,14 +55,15 @@ class SharedPtrNode {
         }
 
         ~SharedPtrNode() {
-            std::cout << "Destroy node " << name << std::endl;
+            std::cout << "Destroying Node " << name << std::endl;
         }
 };
 
 class WeakPtrNode {
 
     private:
-        std::weak_ptr<WeakPtrNode> next;
+        std::weak_ptr<WeakPtrNode> back;
+        std::shared_ptr<WeakPtrNode> next;
         std::string name;
 
     public:
@@ -74,8 +75,12 @@ class WeakPtrNode {
             next = new_next;
         }
 
+        void setBack(std::shared_ptr<WeakPtrNode> new_back) {
+            back = new_back;
+        }
+
         ~WeakPtrNode() {
-            std::cout << "Destroy node " << name << std::endl;
+            std::cout << "Destroying Node " << name << std::endl;
         }
 };
 
@@ -98,9 +103,9 @@ int main() {
         std::cout << "use_count for A: " << A.use_count()
             << ", use_count for B: " << B.use_count() << std::endl;
 
-        std::cout << "Leaving scope" << std::endl;
+        std::cout << "\nLeaving scope..." << std::endl;
     }
-    std::cout << "(No destructor called - memory leaked!)" << std::endl;
+    std::cout << "(No destructors called - memory leaked!)" << std::endl;
 
     std::cout << "=== Fixed with weak_ptr ===" << std::endl;
     {
@@ -113,13 +118,13 @@ int main() {
         std::cout << "C points to D" << std::endl;
         C->setNext(D);
 
-        std::cout << "D points to C (circular reference created)" << std::endl;
-        D->setNext(C);
+        std::cout << "D weakly points back to C" << std::endl;
+        D->setBack(C);
 
         std::cout << "use_count for C: " << C.use_count()
             << ", use_count for D: " << D.use_count() << std::endl;
 
-        std::cout << "Leaving scope" << std::endl;
+        std::cout << "\nLeaving scope..." << std::endl;
     }
     std::cout << "(Proper cleanup - no leak!)" << std::endl;
 
