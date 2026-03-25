@@ -46,8 +46,7 @@ class Lifetime {
         std::string name;
 
     public:
-        Lifetime(std::string n) {
-            name = n;
+        Lifetime(const std::string& n) : name(n) {
             std::cout << "\t" << name << " created" << std::endl;
         }
 
@@ -56,13 +55,13 @@ class Lifetime {
         }
 };
 
-class Composite : Lifetime {
+class Composite {
     private:
+        Lifetime lifetime;
         std::string name;
 
     public:
-        Composite(std::string n) : Lifetime("member object") {
-            name = n;
+        Composite(const std::string& n) : lifetime("member object"), name(n) {
             std::cout << "\t" << name << " created" << std::endl;
         }
 
@@ -82,6 +81,7 @@ void fn() {
 int main() {
     std::cout << "in main" << std::endl;
 
+    fn();
     fn();
 
     Lifetime local1("local 1");

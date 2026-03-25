@@ -48,22 +48,23 @@
 #include <iostream>
 #include <memory>
 
+// Tracks net live allocations; equals leaked count at program end
+// since properly-freed memory decrements this on destruction
 static int allocationCount = 0;
 
 class Thing {
     public:
         Thing() {
-            std::cout << "Allocating memory..." << std::endl;
             allocationCount++;
         }
 
         ~Thing() {
-            std::cout << "Deallocating memory..." << std::endl;
             allocationCount--;
         }
 };
 
 void doSomething() {
+    std::cout << "Allocating memory..." << std::endl;
     Thing* thing3 = new Thing();
     std::cout << "Allocation count: " << allocationCount << std::endl;
 
@@ -82,6 +83,7 @@ int main() {
     std::cout << std::endl;
 
     std::cout << "--- Leak Pattern 1: Forgot to Delete ---" << std::endl;
+    std::cout << "Allocating memory..." << std::endl;
     Thing* thing1 = new Thing();
     std::cout << "Allocation count: " << allocationCount << std::endl;
     std::cout << "(Forgot to delete - LEAK)" << std::endl;
@@ -89,12 +91,14 @@ int main() {
 
     std::cout << "--- Leak Pattern 2: Exception Before Delete ---" << std::endl;
     try {
+        std::cout << "Allocating memory..." << std::endl;
         Thing* thing2 = new Thing();
         std::cout << "Allocation count: " << allocationCount << std::endl;
+        std::cout << "Exception thrown before delete!" << std::endl;
         throw std::runtime_error("intentional error");
-        delete thing2;
+        delete thing2; // unreachable 
     } catch (const std::exception& e) {
-        std::cout << "Exception thrown before delete" << std::endl;
+        // intentionally empty — leak already occurred, nothing to report here
     } 
 
     std::cout << "(Memory leaked due to exception)" << std::endl;
@@ -112,9 +116,9 @@ int main() {
     std::cout << "Allocating with unique_ptr..." << std::endl;
     try {
         auto thing4 = std::make_unique<Thing>();
+        std::cout << "Exception thrown!" << std::endl;
         throw std::runtime_error("intentional error");
     } catch (const std::exception& e) {
-        std::cout << "Exception thrown!" << std::endl;
         std::cout << "Caught exception, but memory auto-cleaned by unique_ptr" <<
             std::endl;
     } 

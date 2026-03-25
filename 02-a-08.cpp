@@ -52,7 +52,7 @@ int main() {
 
     std::cout << "=== Array ===" << std::endl;
     std::cout << "Allocating array with new[]" << std::endl;
-    int* array = new int[]{1, 2, 3, 4, 5};
+    int* array = new int[5]{1, 2, 3, 4, 5};
 
     std::cout << "Array: [";
     for (int index = 0; index < 5; index++) {
@@ -70,17 +70,24 @@ int main() {
     std::cout << "Allocating but not deleting (MEMORY LEAK)" << std::endl;
 
     int* value2 = new int(100);
-    std::cout << "Pointer Value: " << *value2 << std::endl;
+    std::cout << "Pointer value: " << *value2 << std::endl;
     std::cout << "(Memory leaked - never deleted)" << std::endl;
 
     std::cout << "=== Safe Delete Pattern ===" << std::endl;
     int* value3 = new int(47);
+    std::cout << "Pointer is valid, deleting" << std::endl;
+    delete value3;
+    std::cout << "WARNING: Double-delete would crash (commented out)" << std::endl;
+    // delete value3;
+
+
+    value3 = nullptr;
     if (value3) {
-        std::cout << "Pointer is valid, deleting" << std::endl;
         delete value3;
-        /*
-         * line below segfaults
-        delete value3;
-        */
     }
+    std::cout << "Pointer is now null, safe to delete again (does nothing)" << std::endl;
+
+    std::cout << "WARNING: Mismatched new[]/delete would corrupt memory (commented out)"
+        << std::endl;
+    
 }

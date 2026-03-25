@@ -44,29 +44,24 @@
 #include <string>
 
 class Thing {
-
-    public:
-        static Thing *make_thing(int index);
+    private:
         int index;
 
+    public:
         std::string getName() const {
             return "Object_" + std::to_string(index);
         }
 
-        Thing(int i) : index(i) {
+        Thing(const int n) : index(std::move(n)) {
             std::cout << "Constructed: " << getName() << std::endl;
         }
 
-        Thing(const Thing& other) {
-            index = other.index;
-            index++;
+        Thing(const Thing& other) : index(other.index+1) {
             std::cout << "Copy constructor: " << other.getName() << " -> " <<
                 getName() << std::endl;
         }
 
-        Thing(Thing&& other) {
-            index = other.index;
-            index += 2;
+        Thing(Thing&& other) : index(other.index+2) {
             std::cout << "Move constructor: " << other.getName() << " -> " <<
                 getName() << std::endl;
         }
@@ -76,10 +71,13 @@ class Thing {
         }
 };
 
-Thing *Thing::make_thing(int index) {
-    return new Thing(index);
+Thing make_thing(const int index) {
+    /* Typically, this return value will copied across the call stack.
+     * With RVO, instead, it's the same address location in this scope and the
+     * scope outside of it.
+     */
+    return Thing(index);
 }
-
 
 void do_something(Thing thing) {
     std::cout << "Function received: " << thing.getName() << std::endl;
@@ -88,9 +86,9 @@ void do_something(Thing thing) {
 int main() {
     std::cout << "=== Return Value Optimization (RVO) ===" << std::endl;
     std::cout << "Creating object in factory" << std::endl;
-    Thing *thing1 = Thing::make_thing(1);
+    Thing thing1 = make_thing(1);
     std::cout << "(No copy - RVO optimizes away)" << std::endl;
-    std::cout << "Received object: " << thing1->getName() << std::endl;
+    std::cout << "Received object: " << thing1.getName() << std::endl;
 
     std::cout << std::endl;
 
@@ -100,7 +98,7 @@ int main() {
 
     std::cout << std::endl;
 
-    std::cout << "Passing by value" << std::endl;
+    std::cout << "Passing by value (pre-C++11 would copy):" << std::endl;
     do_something(thing2);
 
     std::cout << std::endl;
@@ -108,5 +106,7 @@ int main() {
     std::cout << "With move semantics:" << std::endl;
     do_something(std::move(thing2));
 
-    delete thing1;
+    std::cout << "Modern C++ minimizes copies with RVO and move semantics!" << std::endl;
+
+
 }

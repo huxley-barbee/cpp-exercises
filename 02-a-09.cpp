@@ -78,7 +78,7 @@ int main() {
     std::cout << "Freeing buffer memory" << std::endl;
     free(buffer);
 
-    int MAX = 5;
+    const int MAX = 5;
     MyClass* array[MAX];
     std::cout << "=== Multiple Objects in Buffer ===" << std::endl;
     buffer = malloc(MAX * sizeof(MyClass));
@@ -87,10 +87,11 @@ int main() {
 
     for (int index = 0; index < MAX; index++) {
 
-        std::cout << "Constructed object " << index << " at offset "
-            << (index * sizeof(int)) << std::endl;
+        array[index] =
+            new (static_cast<char*>(buffer) + static_cast<size_t>(index) * sizeof(MyClass)) MyClass(42+index);
 
-        array[index] = new (buffer) MyClass(42+index);
+        std::cout << "Constructed object " << index << " at offset "
+            << (index * sizeof(MyClass)) << std::endl;
 
     }
 
