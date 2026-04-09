@@ -68,7 +68,7 @@
 #include <functional>
 #include <chrono>
 #include <thread> // for std::this_thread::sleep_for
-#include<vector>
+#include <vector>
 
 static int TEST_SIZE = 470000;
 
