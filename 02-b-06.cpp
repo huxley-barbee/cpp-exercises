@@ -48,6 +48,8 @@ class Device {
         Device(int id) : deviceId(id) {
             std::cout << "Creating Device (ID: " << deviceId << ")\n";
         }
+
+        virtual ~Device() = default;
 };
 
 class Scanner : public Device {
@@ -68,7 +70,7 @@ class Printer : public Device {
 class MultiFunctionDevice : public Scanner, public Printer {
     public:
         MultiFunctionDevice(int scannerId, int printerId) : Scanner(scannerId), Printer(printerId) {
-            std::cout << "CreatingMultiFunctionDevice\n";
+            std::cout << "Creating MultiFunctionDevice\n";
             std::cout << "Device constructor called TWICE - diamond problem!\n";
         }
 };
@@ -85,6 +87,8 @@ class VDevice {
         int getDeviceId() {
             return deviceId;
         }
+
+        virtual ~VDevice() = default;
 };
 
 class VScanner : public virtual VDevice {
@@ -111,9 +115,9 @@ class VPrinter : public virtual VDevice {
 
 class VMultiFunctionDevice : public VScanner, public VPrinter {
     public:
-        VMultiFunctionDevice(int deviceId) : VDevice(deviceId), VScanner(1), VPrinter(2) {
-            std::cout << "CreatingMultiFunctionDeviceV\n";
-            std::cout << "Device constructor called TWICE - diamond problem!\n";
+        VMultiFunctionDevice(int deviceId) : VDevice(deviceId), VScanner(0), VPrinter(0) { // VScanner(0) and VPrinter(0) are actually ignored
+            std::cout << "Creating MultiFunctionDeviceV\n";
+            std::cout << "Device constructor called ONCE - problem solved!\n";
         }
 };
 
@@ -129,10 +133,12 @@ int main() {
     std::cout << "=== Solution: Virtual Inheritance ===\n";
 
     VMultiFunctionDevice* vDevice = new VMultiFunctionDevice(100);
-    std::cout << "Device constructor called ONCE - problem solved!\n";
     vDevice->scan();
     vDevice->print();
     std::cout << "MultiFunctionDeviceV has both: scan() and print()\n";
 
     std::cout << "Device ID: " << vDevice->getDeviceId() << " (single instance)\n";
+
+    delete device;
+    delete vDevice;
 }
