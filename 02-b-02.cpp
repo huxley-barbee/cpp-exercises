@@ -34,6 +34,7 @@
 
 #include <iostream>
 #include <string>
+#include <cmath>
 
 class Shape {
     protected:
@@ -41,30 +42,30 @@ class Shape {
 
     public:
 
-        Shape(std::string n) : name(n) { }
+        Shape(const std::string& n) : name(n) { }
 
-        std::string getName() {
+        std::string getName() const {
             return name;
         }
 
-        virtual double getArea() = 0;
+        virtual double getArea() const = 0;
 
         virtual ~Shape() = default;
 };
 
 class Rectangle : public Shape {
     private:
-        int length;
-        int width;
+        double length;
+        double width;
 
     public:
-        Rectangle(std::string n, int l, int w) : Shape(n), length(l), width(w) { }
+        Rectangle(const std::string& n, double l, double w) : Shape(n), length(l), width(w) { }
 
-        double getArea() {
+        double getArea() const override {
             return length * width;
         }
 
-        void test() {
+        void showProtectedAccess() {
 
             std::cout << "Can access protected 'name' in derived class\n";
 
@@ -73,13 +74,13 @@ class Rectangle : public Shape {
 
 class Circle : public Shape {
     private:
-        int radius;
+        double radius;
 
     public:
-        Circle(std::string n, int r) : Shape(n), radius(r) { }
+        Circle(const std::string& n, double r) : Shape(n), radius(r) { }
 
-        double getArea() {
-            return radius * radius * 3.14;
+        double getArea() const override {
+            return radius * radius * M_PI;
         }
 };
 
@@ -90,7 +91,7 @@ int main() {
     std::cout << "Circle: radius=4\n";
     Circle circle = Circle("Circle", 4);
 
-    std::cout << "\n\n";
+    std::cout << "\n";
 
     std::cout << "Shape information:\n";
     std::cout << "Name: " << rectangle.getName() << "\n";
@@ -103,10 +104,13 @@ int main() {
         std::cout << "Rectangle is-a Shape: true\n";
     }
 
-    rectangle.test();
+    rectangle.showProtectedAccess();
 
     std::cout << "Cannot access protected 'name' from outside class\n";
     //rectangle.name;
+
+    Shape* s = &rectangle;
+    std::cout << "\nPolymorphism via base pointer: " << s->getArea() << "\n";
 
 
 }
