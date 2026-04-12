@@ -50,27 +50,39 @@ class Animal {
     public:
         Animal(std::string n) : name(n) { }
 
-        std::string getName() {
+        std::string getName() const {
             return name;
         }
 
-        virtual Animal* clone() {
+        virtual Animal* clone() const {
             return new Animal(*this);
         }
+
+        virtual std::string getType() const {
+            return "Animal";
+        }
+
+        virtual ~Animal() = default;
 };
 
 class Dog : public Animal {
     public:
         Dog(std::string n) : Animal(n) {
         }
-        Dog* clone() override {
+        Dog* clone() const override {
             return new Dog(*this);
+        }
+        std::string getType() const override {
+            return "Dog";
         }
 };
 
 class OtherDog : public Animal {
     public:
         OtherDog(std::string n) : Animal(n) {
+        }
+        OtherDog* clone() const override {
+            return new OtherDog(*this);
         }
 };
 
@@ -89,11 +101,11 @@ This is allowed because Derived* is-a Base*
 )EOF";
 
     std::cout << "Example: Animal cloning\n";
-    Dog* a = new Dog("Buddy");
-    Dog* d = a->clone();  // Returns Dog*, not just Animal*
+    Animal* a = new Dog("Buddy");
+    Dog* d = static_cast<Dog*>(a->clone());
 
-    std::cout << "Cloned dog: Buddy (type: " << typeid(Dog).name() << ")\n";
-    std::cout << "Original: Buddy (type: " << typeid(a).name() << ")\n";
+    std::cout << "Cloned dog: Buddy (type: " << d->getType() << ")\n";
+    std::cout << "Original: Buddy (type: " << a->getType() << ")\n";
 
     std::cout << "\n";
 
@@ -108,5 +120,9 @@ This is allowed because Derived* is-a Base*
     Animal *b = new OtherDog("Lassie");
     Animal* cloned = b->clone();
     OtherDog* otherDog = dynamic_cast<OtherDog*>(cloned);
+
+    delete a;
+    delete b;
+    delete cloned;
 
 }
