@@ -39,7 +39,7 @@ class BaseProper {
         BaseProper() {
             std::cout << "Creating BaseProper\n";
         }
-        ~BaseProper() {
+        virtual ~BaseProper() {
             std::cout << "~BaseProper() destructor\n";
         }
 };
@@ -51,7 +51,7 @@ class DerivedProper : public BaseProper {
     public:
         DerivedProper() {
             std::cout << "Creating DerivedProper (allocating resource)\n";
-            data = (int*)malloc(sizeof(int));
+            data = new int;
         }
         ~DerivedProper() {
             std::cout << "~DerivedProper() destructor (freeing resource)\n";
@@ -76,9 +76,10 @@ class Derived : public Base {
     public:
         Derived() {
             std::cout << "Creating Derived (allocating resource)\n";
-            data = (int*)malloc(sizeof(int));
+            data = new int;
         }
         ~Derived() {
+            std::cout << "~Derived() destructor (freeing resource)\n";
             delete data;
         }
 };
