@@ -43,60 +43,70 @@
 
 #include <iostream>
 
-class IWorker {
-    public:
-        virtual void work() = 0;
-        virtual void eat() = 0;
-        virtual void sleep() = 0;
+namespace bad_design {
+
+    class IWorker {
+        public:
+            virtual void work() = 0;
+            virtual void eat() = 0;
+            virtual void sleep() = 0;
+            virtual ~IWorker() = default;
+    };
+
+    class Robot : public IWorker {
+
+        public:
+            void work() {
+                std::cout << "Robot working...\n";
+            }
+            void eat() {
+                std::cout << "Robot eat: No-op (doesn't make sense!)\n";
+            }
+            void sleep() {
+                std::cout << "Robot sleep: No-op (doesn't make sense!)\n";
+            }
+    };
 };
 
-class FatRobot : public IWorker {
+namespace good_design {
 
-    public:
-        void work() {
-            std::cout << "working...";
-        }
-        void eat() {
-            std::cout << "No-op";
-        }
-        void sleep() {
-            std::cout << "No-op";
-        }
-};
+    class IWorkable {
+        public:
+            virtual void work() = 0;
+            virtual ~IWorkable() = default;
+    };
 
-class IWorkable {
-    public:
-        virtual void work() = 0;
-};
+    class IFeedable {
+        public:
+            virtual void eat() = 0;
+            virtual ~IFeedable() = default;
+    };
 
-class IFeedable {
-    public:
-        virtual void eat() = 0;
-};
+    class IRestable {
+        public:
+            virtual void sleep() = 0;
+            virtual ~IRestable() = default;
+    };
 
-class IRestable {
-    public:
-        virtual void sleep() = 0;
-};
+    class Human : public IWorkable, public IFeedable, public IRestable {
+        public:
+            void work() {
+                std::cout << "Human working...\n";
+            }
+            void eat() {
+                std::cout << "Human eating...\n";
+            }
+            void sleep() {
+                std::cout << "Human sleeping...\n";
+            }
+    };
 
-class Human : public IWorkable, public IFeedable, public IRestable {
-    public:
-        void work() {
-            std::cout << "working...";
-        }
-        void eat() {
-            std::cout << "eating...";
-        }
-        void sleep() {
-            std::cout << "sleeping...";
-        }
-};
-
-class Robot : public IWorkable {
-    public:
-        void work() {
-            std::cout << "working...";
-        }
+    class Robot : public IWorkable {
+        public:
+            void work() {
+                std::cout << "Robot working...\n";
+            }
+    };
 };
 
 int main() {
@@ -109,16 +119,11 @@ int main() {
     std::cout << "};\n";
 
     std::cout << "Robot must implement eat() and sleep() even though robots don't eat/sleep!\n";
-    FatRobot fatRobot;
-    std::cout << "Robot ";
+    bad_design::Robot bloated;
+    bad_design::IWorker& fatRobot = bloated;
     fatRobot.work();
-    std::cout << "\n";
-    std::cout << "Robot eat: ";
     fatRobot.eat();
-    std::cout << " (doesn't make sense!)\n";
-    std::cout << "Robot sleep: ";
     fatRobot.sleep();
-    std::cout << " (doesn't make sense!)\n";
 
     std::cout << "\n";
 
@@ -131,24 +136,20 @@ int main() {
     std::cout << "\n";
 
     std::cout << "Human implements all three:\n";
-    Human human;
-    std::cout << "Human ";
-    human.work();
-    std::cout << "\n";
-    std::cout << "Human ";
-    human.eat();
-    std::cout << "\n";
-    std::cout << "Human ";
-    human.sleep();
-    std::cout << "\n";
+    good_design::Human human;
+    good_design::IWorkable& work = human;
+    work.work();
+    good_design::IFeedable& feed = human;
+    feed.eat();
+    good_design::IRestable& rest = human;
+    rest.sleep();
 
     std::cout << "\n";
 
     std::cout << "Robot implements only IWorkable:\n";
-    Robot robot;
-    std::cout << "Robot ";
-    robot.work();
-    std::cout << "\n";
+    good_design::Robot robot;
+    good_design::IWorkable& clean_robot = robot;
+    clean_robot.work();
     std::cout << "(No eat/sleep methods - cleaner design!)\n";
 
 }
