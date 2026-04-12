@@ -54,8 +54,12 @@ class NoVirtual {
 };
 
 class WithVirtual {
+    private:
+        int member;
+
     public:
         virtual void function() = 0;
+        virtual ~WithVirtual() = default;
 };
 
 class Concrete : public WithVirtual {
@@ -75,26 +79,20 @@ int main() {
         R"EOF(=== Virtual Function Table Demo ===
 
 Class without virtual functions:
+
 )EOF";
 
     std::cout << "sizeof(NoVirtual): " << sizeof(NoVirtual) << " bytes (just int member)\n";
-
     std::cout << "\n";
-
     std::cout << "Class with virtual functions:\n";
-    std::cout << "sizeof(WithVirtual): " << sizeof(WithVirtual) << "bytes (int + vtable pointer + padding)\n";
+    std::cout << "sizeof(WithVirtual): " << sizeof(WithVirtual) << " bytes (int + vtable pointer + padding)\n";
     std::cout << "Vtable pointer adds 8 bytes on 64-bit system\n";
 
     std::cout << "Memory layout:\n";
-    std::cout << "[";
 
     Concrete with;
-    void*** ptr = (void***)&with;
 
-    std::cout << *ptr;
-    std::cout << "][";
-    std::cout << **ptr;
-    std::cout << "]\n\n";
+    std::cout << "[vtable ptr][member data]\n\n";
 
     std::cout << "Virtual function call process:\n";
 
@@ -108,7 +106,7 @@ Class without virtual functions:
     std::cout << *ptr2 << "\n";
 
     std::cout << "3. Look up function pointer in vtable\n";
-    std::cout << **ptr2 << "\n";
+    std::cout << "vtable[0] @ " << (void*)(*ptr2) << "\n";
 
     std::cout << "4. Call function through pointer\n";
 
@@ -119,14 +117,17 @@ Class without virtual functions:
     NoVirtual no;
     no.function();
 
-    std::cout << "\n\n";
+    std::cout << "\n";
     std::cout << "Static function call:\n";
     std::cout << "1. Direct call (no object needed)\n";
+    function();
 
     std::cout <<
         R"EOF(Performance:
 Virtual call: ~2 indirections
 Non-virtual call: 0 indirections
 )EOF";
+
+    delete wv2;
 
 }
