@@ -46,47 +46,20 @@
 
 #include <iostream>
 
-class Base {
-
-    protected:
-        int protectedMember;
-
-    public:
-        int publicMember;
-
-        Base() {
-            protectedMember = 42;
-            publicMember = 47;
-        }
-
-        void printProtected() {
-            std::cout << protectedMember;
-        }
-};
-
-class Derived : public Base {
-};
-
 class Animal {
     public:
-        void sound() {
-            std::cout << "noop";
-        }
+
+        virtual ~Animal() = default;
 };
 
 class Dog : public Animal {
     public:
-        void sound() {
-            std::cout << "bark";
-        }
-};
-
-class DerivedProtected : protected Base {
 };
 
 class Vector {
     public:
         int size() {
+            // stub
             return 47;
         }
 };
@@ -99,7 +72,7 @@ class ProtectedStack : protected Vector {
         }
 };
 
-class PrivateStack : protected Vector {
+class PrivateStack : private Vector {
 
     public:
         int stackSize() {
@@ -109,22 +82,15 @@ class PrivateStack : protected Vector {
 
 int main() {
 
-    std::cout <<
-        R"EOF(=== Public Inheritance ===
+    std::cout << R"EOF(=== Public Inheritance ===
 class Derived : public Base
 Derived "is-a" Base
 Base public members are public in Derived
 Base protected members are protected in Derived
 )EOF";
 
-    Derived derived;
-    std::cout << derived.publicMember << "\n";
-    // std::cout << derived.protectedMember;
-    derived.printProtected();
-    std::cout << "\n";
-
     Dog dog;
-    std::cout << "Dog is-a Animal: " << dynamic_cast<Animal *>(&dog) << "\n";
+    std::cout << "Dog is-a Animal: " << std::boolalpha << (dynamic_cast<Animal *>(&dog) != nullptr) << "\n";
     std::cout << "Can use Dog as Animal: polymorphism works\n";
 
     std::cout << "\n";
@@ -143,11 +109,12 @@ Can access inside Stack implementation
 )EOF";
 
     ProtectedStack protectedStack;
-    // protectedStack.size();
-    std::cout << protectedStack.stackSize();
+    protectedStack.stackSize(); // accessible: compiles fine
+    // protectedStack.size();   // inaccessible: would not compile
 
     std::cout <<
-        R"EOF(=== Private Inheritance ===
+        R"EOF(
+=== Private Inheritance ===
 class Derived : private Base
 Base public members become private in Derived
 "Implemented-in-terms-of" relationship
@@ -160,7 +127,6 @@ Can't access Vector methods
 Used for implementation, not interface
 )EOF";
 
-    // Vector* privateStack = new PrivateStack();
     PrivateStack privateStack;
     //privateStack.size();
 
