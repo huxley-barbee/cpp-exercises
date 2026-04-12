@@ -38,29 +38,34 @@
 class BankAccount {
 
     private:
-        std::string accountName;
-        int balance;
+        int accountNumber;
+        double balance;
 
     public:
-        BankAccount(std::string name, int initial) : accountName(name), balance(initial) {
-            std::cout << "Creating account " << accountName << " with inital balance: $"
+        BankAccount(int num, double initial) : accountNumber(num), balance(initial) {
+            std::cout << "Creating account " << accountNumber << " with initial balance: $"
                 << balance << "\n";
         }
 
-        void deposit(int amount) {
+        void deposit(double amount) {
+            if (amount < 0) {
+                throw std::runtime_error("invalid argument");
+            }
             balance += amount;
         }
 
-        void withdraw(int amount) {
-            if (amount > balance) {
+        void withdraw(double amount) {
+            if (amount < 0) {
+                throw std::runtime_error("invalid argument");
+            } else if (amount > balance) {
                 std::cout << "Insufficient funds! Balance: $" << balance << "\n";
-                throw std::exception();
+                throw std::runtime_error("insufficient funds");
             } else {
                 balance -= amount;
             }
         }
 
-        int getBalance() {
+        double getBalance() const {
             return balance;
         }
 
@@ -68,8 +73,8 @@ class BankAccount {
 
 int main() {
 
-    BankAccount one = BankAccount("1001", 1000);
-    BankAccount two = BankAccount("1002", 500);
+    BankAccount one = BankAccount(1001, 1000);
+    BankAccount two = BankAccount(1002, 500);
 
     std::cout << "\n";
 
@@ -87,7 +92,7 @@ int main() {
     std::cout << "Attempting to withdraw $600\n";
     try {
         two.withdraw(600);
-    } catch(std::exception e) {
+    } catch(const std::exception& e) {
         std::cout << "Balance remains: $" << two.getBalance() << "\n";
     }
 
