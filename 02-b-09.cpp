@@ -51,17 +51,19 @@
  */
 
 #include <iostream>
+#include <memory>
 
 class Engine {
     public:
-        void ignite() {
+        virtual void ignite() {
             std::cout << "Engine: Starting 2.0L engine\n";
         }
+        virtual ~Engine() = default;
 };
 
 class TurboEngine : public Engine {
     public:
-        void ignite() {
+        void ignite() override {
             std::cout << "Engine: Starting 3.5L turbocharged engine\n";
         }
 };
@@ -79,19 +81,24 @@ class Car : public Engine, public Wheel {
 
 class CompositionCar {
     private:
-        Engine engine;
-        Wheel wheel;
-
+        std::unique_ptr<Engine> engine;
+        std::unique_ptr<Wheel> wheel;
 
     public:
-        Engine getEngine() {
-            return engine;
+
+        CompositionCar() {
+            engine = std::make_unique<Engine>();
+            wheel = std::make_unique<Wheel>();
         }
-        Engine setEngine(Engine e) {
-            return engine = e;
+
+        Engine& getEngine() {
+            return *engine;
         }
-        Wheel getWheel() {
-            return wheel;
+        void setEngine(std::unique_ptr<Engine> e) {
+            engine = std::move(e);
+        }
+        Wheel& getWheel() {
+            return *wheel;
         }
 };
 
@@ -100,8 +107,7 @@ int main() {
     std::cout << "=== Inheritance Approach ===\n";
     std::cout << "class Car : public Engine, public Wheels {\n";
     std::cout << "// Car \"is-a\" Engine? No - wrong relationship!\n";
-
-    std::cout << "\n";
+    std::cout << "};\n\n";
 
     std::cout << "Car (via inheritance):\n";
     Car car;
@@ -135,8 +141,7 @@ std::cout << "\n";
 
 std::cout << "Changing engine at runtime:\n";
 
-TurboEngine turbo;
-compositionCar.setEngine(turbo);
+compositionCar.setEngine(std::make_unique<TurboEngine>());
 compositionCar.getEngine().ignite();
 compositionCar.getWheel().spin();
 
