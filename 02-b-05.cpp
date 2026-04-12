@@ -43,9 +43,10 @@
 
 class Shape {
     public:
-        virtual double getArea() = 0;
-        virtual double getPerimeter() = 0;
+        virtual double getArea() const = 0;
+        virtual double getPerimeter() const = 0;
         virtual void draw() = 0;
+        virtual ~Shape() = default;
 };
 
 class Square : public Shape {
@@ -55,16 +56,16 @@ class Square : public Shape {
     public:
         Square(size_t s) : size(s) { }
 
-        double getArea() {
+        double getArea() const override {
             return size * size;
         }
 
-        double getPerimeter() {
+        double getPerimeter() const override {
             return 4 * size;
         }
 
-        void draw() {
-            for (int index = 0; index < size; index++) {
+        void draw() override {
+            for (size_t index = 0; index < size; index++) {
                 std::cout << "■";
             }
         }
@@ -78,16 +79,16 @@ class Triangle : public Shape {
     public:
         Triangle(size_t b, size_t h) : base(b), height(h) { }
 
-        double getArea() {
+        double getArea() const override {
             return 0.5 * base * height;
         }
 
-        double getPerimeter() {
+        double getPerimeter() const override {
             double third = std::sqrt(base * base + height * height);
             return base + height + third;
         }
 
-        void draw() {
+        void draw() override {
             std::cout << "△";
         }
 };
@@ -98,9 +99,9 @@ int main() {
     // Shape shape; // ERROR
 
     std::cout << "Creating concrete shapes:\n";
-    Square square = Square(5);
+    Square square(5);
     std::cout << "Square created: side=5\n";
-    Triangle triangle = Triangle(3, 4);
+    Triangle triangle(4, 3);
     std::cout << "Triangle created: base=4, height=3, sides=3,4,5\n\n";
 
     std::cout << "Square:\n";
@@ -119,8 +120,10 @@ int main() {
  
     std::cout << "Abstract class used as interface for polymorphism\n";
     Shape* one = new Square(5);
-    Shape* two = new Triangle(3, 4);
+    Shape* two = new Triangle(4, 3);
     std::cout << "Shape 1 area: " << one->getArea() << "\n";
     std::cout << "Shape 2 area: " << two->getArea() << "\n";
 
+    delete one;
+    delete two;
 }
