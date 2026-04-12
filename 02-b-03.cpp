@@ -48,6 +48,9 @@ class Animal {
         void non_virt_speak() {
             std::cout << "Base animal sound\n";
         }
+
+        virtual ~Animal() = default;  // Always add this when using virtual functions
+
 };
 
 class Dog : public Animal {
@@ -56,7 +59,7 @@ class Dog : public Animal {
             std::cout << "Dog created\n";
         }
 
-        void speak() {
+        void speak() override {
             std::cout << "Dog says: Woof!\n";
         }
 };
@@ -67,7 +70,7 @@ class Cat : public Animal {
             std::cout << "Cat created\n";
         }
 
-        void speak() {
+        void speak() override {
             std::cout << "Cat says: Meow!\n";
         }
 };
@@ -78,31 +81,37 @@ class Bird : public Animal {
             std::cout << "Bird created\n";
         }
 
-        void speak() {
+        void speak() override {
             std::cout << "Bird says: Chirp!\n";
         }
 };
 
 int main() {
+    std::cout << "=== Virtual Function Demo ===\n"; 
+
 
     std::cout << "Creating animals:\n";
-    Animal dog = Dog();
-    Animal cat = Cat();
-    Animal bird = Bird();
+    Animal* dog = new Dog();
+    Animal* cat = new Cat();
+    Animal* bird = new Bird();
 
     std::cout << "\nCalling speak() through base class pointers:\n";
-    dog.speak();
-    cat.speak();
-    bird.speak();
+    dog->speak();
+    cat->speak();
+    bird->speak();
 
     std::cout << "\n=== Non-Virtual Function Demo ===\n";
-    std::cout << "Without virtual: Base speak() call for all\n";
-    dog.non_virt_speak();
-    cat.non_virt_speak();
-    bird.non_virt_speak();
+    std::cout << "Without virtual: Base speak() called for all\n";
+    dog->non_virt_speak();
+    cat->non_virt_speak();
+    bird->non_virt_speak();
 
     std::cout << "\nWith virtual: Correct derived method called\n";
-    dog.speak();
-    cat.speak();
-    bird.speak();
+    dog->speak();
+    cat->speak();
+    bird->speak();
+    
+    delete dog;
+    delete cat;
+    delete bird;
 }
