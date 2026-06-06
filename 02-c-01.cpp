@@ -43,8 +43,8 @@ template <typename T> T max(T x, T y) {
     }
 }
 
-template <typename T> const std::string infer(T x);
-template <> const std::string infer<int>(int)    { return "int"; }
+template <typename T> std::string infer(T x) { return "unknown"; }
+template <> std::string infer<int>(int)    { return "int"; }
 
 template <typename T> void swap(T& x, T& y) {
     T temp = x;
@@ -61,17 +61,17 @@ int main() {
 
     std::cout << "\n";
 
-    std::cout << "Type deduction: compiler infers T = : " << infer(47) << "\n";
-    std::cout << "Explicit instantiation: max<double>(3.14, 2.71) = " << max<double>(3.41, 2.71) << "\n";
+    std::cout << "Type deduction: compiler infers T = " << infer(47) << "\n";
+    std::cout << "Explicit instantiation: max<double>(3.14, 2.71) = " << max<double>(3.14, 2.71) << "\n";
 
     std::cout << "\n";
 
     std::cout << "=== Function Template: swap ===\n";
     int a = 5;
     int b = 10;
-    std::cout << "Before swap: a=" << a << ", b= " << b << "\n";
+    std::cout << "Before swap: a=" << a << ", b=" << b << "\n";
     swap<int>(a, b);
-    std::cout << "After swap: a=" << a << ", b= " << b << "\n";
+    std::cout << "After swap: a=" << a << ", b=" << b << "\n";
 
     std::string s1 = "hello";
     std::string s2 = "world";
