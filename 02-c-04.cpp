@@ -47,16 +47,21 @@ template <typename T, typename U> class Pair {
     public:
         Pair<T, U>(T first, U second) : one(first), two(second) {}
 
+        void print() const {
+            std::cout << "(" << one << ", " << two << ")\n";
+        }
 };
 
 template <typename T, int SIZE> class Array {
     private:
-        std::vector<T> data = std::vector<T>(SIZE);
+        T data[SIZE];
+        int current = 0;
 
     public:
 
         void push(const T& item) {
-            data.push_back(item);
+            data[current] = item;
+            current++;
         }
 
         void print() {
@@ -64,7 +69,8 @@ template <typename T, int SIZE> class Array {
 
             std::cout << "[";
 
-            for (const auto& item : data) {
+            for (int index = 0; index < current; index++) {
+                const auto& item = data[index];
                 if (first) {
                     first = false;
                 } else {
@@ -88,24 +94,24 @@ template <typename T> class BumpAllocator {
 
     private:
         char *pool;
-        size_t remainingStart;
         size_t end;
+        size_t remainingStart;
 
     public:
 
         BumpAllocator(char *buffer, size_t size) :
-            pool(buffer), end(size) {
+            pool(buffer), end(size), remainingStart(0) {
         }
 
         T* allocate(size_t n) {
 
             size_t size = n * sizeof(T);
 
-            if (pool+remainingStart+size > end) {
+            if (remainingStart+size > end) {
                 throw std::bad_alloc();
             }
 
-            T* returnPtr = reinterpret_class<T*>(pool+remainingStart);
+            T* returnPtr = reinterpret_cast<T*>(pool+remainingStart);
 
             remainingStart += size;
             
@@ -125,26 +131,30 @@ template <typename T, template <typename...> class A> class Container {
 int main() {
 
     std::cout << "=== Pair<T1, T2> ===\n";
-    std::cout << "Pair of int and string: (42, \"answer\")\n";
     Pair<int, std::string> intString(42, "answer");
-    std::cout << "Pair of double and char: (3.14, 'A')\n";
+    std::cout << "Pair of int and string: ";
+    intString.print();
     Pair<double, char> doubleChar(3.14, 'A');
+    std::cout << "Pair of double and char: ";
+    doubleChar.print();
     std::cout << "\n";
 
     std::cout << "=== Array<T, Size> ===\n";
-    Array<int, 0> arrayI;
+    Array<int, 5> arrayI;
     arrayI.push(1);
     arrayI.push(2);
     arrayI.push(3);
     arrayI.push(4);
     arrayI.push(5);
+    std::cout << "Array<int, 5>: ";
     arrayI.print();
     std::cout << "\n";
 
-    Array<double, 0> arrayD;
+    Array<double, 3> arrayD;
     arrayD.push(1.1);
     arrayD.push(2.2);
     arrayD.push(3.3);
+    std::cout << "Array<double, 3>: ";
     arrayD.print();
     std::cout << "\n";
 
@@ -162,8 +172,7 @@ int main() {
 
     std::cout << "Vector<int, CustomAllocator> uses custom allocator\n";
     char pool[1024];
-    BumpAllocator<int> allocator(pool, sizeof(pool));
-    Vector<int, std::allocator<int>> otherIntVector;
+    Vector<int, BumpAllocator<int>> otherIntVector;
 
     std::cout << "\n";
 
