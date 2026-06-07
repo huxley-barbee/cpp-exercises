@@ -36,10 +36,11 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 
 template <typename T> class Storage {
     public:
-        void store(T thing) {
+        void store(const T& thing) {
             std::cout << "Size: " << sizeof(thing) << " bytes\n";
         }
 
@@ -53,12 +54,12 @@ template <> class Storage<bool> {
         }
 };
 
-template <> class Storage<std::string> {
+template <> class Storage<char*> {
     public:
-        void store(std::string thing) {
+        void store(const char *thing) {
             std::cout << "Size: dynamic\n";
-            std::cout << "Value: " << thing << "\n";
-            std::cout << "String length: " << thing.size() << "\n";
+            std::cout << "Value: \"" << thing << "\"\n";
+            std::cout << "String length: " << strlen(thing)<< "\n";
         }
 };
 
@@ -82,9 +83,10 @@ int main() {
     Storage<bool> boolStorage;
     boolStorage.store(true);
 
+    std::cout << "\n";
     std::cout << "=== Full Specialization for char* ===\n";
     std::cout << "Storage<char*>: using string handling\n";
-    Storage<std::string> stringStorage;
+    Storage<char*> stringStorage;
     stringStorage.store("hello world");
 
     std::cout << "\n";
