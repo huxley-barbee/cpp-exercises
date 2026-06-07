@@ -46,15 +46,22 @@ template <typename T> class Container {
 template <typename T> class Container<T*> {
     public:
         void print(T* thing) {
-            std::cout << "Deferencing pointer: " << *thing << "\n";
+            std::cout << "Dereferencing pointer: " << *thing << "\n";
         }
 };
 
 template <typename T> class Container<const T> {
     public:
         void print(const T thing) {
-            std::cout << "Element: " << thing << " (cannot modify)\n";
+            std::cout << "Value: " << thing << " (cannot modify)\n";
             //thing = 101;
+        }
+};
+
+template <typename T> class Container<const T*> {
+    public:
+        void print(const T* thing) {
+            std::cout << "Dereferencing const pointer: " << *thing << "\n";
         }
 };
 
@@ -76,17 +83,23 @@ int main() {
     std::cout << "\n";
 
     std::cout << "=== Partial Specialization for Const ===\n";
-    std::cout << "Container<const int>: const container (read-only)";
+    std::cout << "Container<const int>: const container (read-only)\n";
     Container<const int> container3;
-    const int val = 47;
+    const int val = 100;
     container3.print(val);
 
     std::cout << "\n";
+
 
     std::cout << "=== Specialization Selection Order ===\n";
     std::cout << "Container<int> -> primary template\n";
     std::cout << "Container<int*> -> pointer specialization\n";
     std::cout << "Container<const int> -> const specialization\n";
+
+    Container<const int *> container4;
+    const int cval = 42;
+    container4.print(&cval);
+
     std::cout << "Container<const int*> -> most specialized (pointer + const)\n";
 
     std::cout << "\n";
