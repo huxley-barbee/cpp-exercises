@@ -35,8 +35,10 @@
 
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 
-template <typename T> class Stack {
+template <typename T>
+class Stack {
 
     private:
         std::vector<T> list;
@@ -47,25 +49,36 @@ template <typename T> class Stack {
             list.push_back(item);
         }
 
-        T top() {
+        T top() const {
+            if (list.empty()) {
+                throw std::out_of_range("Stack is empty");
+            }
+
             return list.back();
         }
 
         T pop() {
+            if (list.empty()) {
+                throw std::out_of_range("Stack is empty");
+            }
+
             T last = list.back();
             list.pop_back();
             return last;
         }
 
-        int size() {
+        size_t size() const {
             return list.size();
         }
 
-        bool empty() {
-            return list.empty();
-        }
+        bool empty() const;
 
 };
+
+template<typename T>
+bool Stack<T>::empty() const {
+    return list.empty();
+}
 
 int main() {
 
@@ -77,7 +90,7 @@ int main() {
     stack1.push(30);
     std::cout << "Top: " << stack1.top() << "\n";
     std::cout << "Popping: " << stack1.pop() << "\n";
-    std::cout << "Top after pop: " << stack1.top() << "\n";;
+    std::cout << "Top after pop: " << stack1.top() << "\n";
     std::cout << "Size: " << stack1.size() << "\n";
 
     std::cout << "\n";
@@ -89,7 +102,7 @@ int main() {
     stack2.push("world");
     std::cout << "Top: " << stack2.top() << "\n";
     std::cout << "Popping: " << stack2.pop() << "\n";
-    std::cout << "Empty: " << std::boolalpha << stack2.empty() << " \n";
+    std::cout << "Empty: " << std::boolalpha << stack2.empty() << "\n";
 
     std::cout << "\n";
 
