@@ -33,25 +33,8 @@
 #include <string>
 #include <typeinfo>
 
-template <typename T, typename U> std::pair<T, U>
+template <typename T, typename U> auto
     makePair(const T& one, const U& two) {
-
-    std::cout << "Type 1: ";
-
-    if (typeid(one) == typeid(int)) {
-        std::cout << "int";
-    }
-
-    std::cout << ", value: " << one << "\n";
-
-    std::cout << "Type 2: ";
-
-    if (typeid(two) == typeid(std::string)) {
-        std::cout << "string";
-    }
-
-    std::cout << ", value: " << two << "\n";
-
     return std::make_pair(one, two);
 }
 
@@ -63,11 +46,11 @@ template<> int convert<std::string, int>(const std::string& s) {
     return std::stoi(s);
 }
 
-template <typename T> auto add(T one, T two) {
+template <typename T, typename U> auto add(T one, U two) {
     return one + two;
 }
 
-template <typename T> auto multiply(T one, T two) {
+template <typename T, typename U> auto multiply(T one, U two) {
     return one * two;
 }
 
@@ -75,12 +58,14 @@ int main() {
 
     std::cout << "=== Multiple Type Parameters ===\n";
     std::cout << "Creating pair: (42, \"hello\")\n";
-    makePair<int, std::string>(42, "hello");
+    std::pair<int, std::string> pair = makePair<int>(42, "hello");
+    std::cout << "Type 1: int, value: " << pair.first << "\n";
+    std::cout << "Type 2: string, value: " << pair.second << "\n";
 
     std::cout << "\n";
 
     std::cout << "Converting int to double: 42 -> ";
-    std::cout << convert<int, double>(42);
+    std::cout << std::showpoint << convert<int, double>(42);
     std::cout << "\n";
 
     std::cout << "Converting double to int: 3.14 -> ";
@@ -94,9 +79,9 @@ int main() {
     std::cout << "\n";
 
     std::cout << "=== Auto Return Type ===\n";
-    std::cout << "add(5, 10) = " << add<>(5, 10)
+    std::cout << "add(5, 10) = " << add(5, 10)
         << " (deduced return type)\n";
-    std::cout << "multiply(3.5, 2.0) = " << multiply<>(3.5, 2.0)
+    std::cout << "multiply(3.5, 2.0) = " << std::showpoint << multiply(3.5, 2.0)
         << " (deduced return type)\n";
 
     std::cout << "Multiple type parameters allow flexible template functions!\n";
