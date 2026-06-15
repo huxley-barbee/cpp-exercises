@@ -70,6 +70,8 @@ int main() {
     //process("hello");
     std::cout << "Compiler error: no matching function (both overloads SFINAE'd out)\n";
 
+    std::cout << "\n";
+
     std::cout <<
         R"EOF(=== How SFINAE Works ===
 1. Compiler tries to substitute int into enable_if<is_floating_point<int>>
