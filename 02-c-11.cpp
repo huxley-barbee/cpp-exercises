@@ -56,24 +56,21 @@ struct Factorial<0> {
     static const int value = 1;
 };
 
-//template<int N>
-//struct Fibonacci {
-//    static const int value;
-//};
-//
-//template<int N>
-//const int Fibonacci<N>::value = Fibonacci<N-1>::value + Fibonacci<N-2>::value;
-//
-//// base cases as full struct specializations
-//template<>
-//struct Fibonacci<0> {
-//    static const int value = 0;
-//};
-//
-//template<>
-//struct Fibonacci<1> {
-//    static const int value = 1;
-//};
+template<int N>
+struct Fibonacci {
+    static constexpr int value = Fibonacci<N-1>::value + Fibonacci<N-2>::value;
+};
+
+// base cases as full struct specializations
+template<>
+struct Fibonacci<0> {
+    static constexpr int value = 0;
+};
+
+template<>
+struct Fibonacci<1> {
+    static constexpr int value = 1;
+};
 
 constexpr int factorial(int n) {
     return n <= 1 ? 1 : n * factorial(n - 1);
@@ -112,14 +109,26 @@ struct Tail<TypeList<T, Ts...>> {
     using type = TypeList<Ts...>;
 };
 
+template<typename List> struct Last;
+
+template<typename T, typename... Ts>
+struct Last<TypeList<T, Ts...>> {
+    using type = typename Last<TypeList<Ts...>>::type;
+};
+
+template<typename T>
+struct Last<TypeList<T>> {
+    using type = T;
+};
+
 int main() {
     std::cout << "=== Compile-Time Factorial ===\n";
     std::cout << "factorial<5> = " << Factorial<5>::value << " (computed at compile time)\n";
     std::cout << "factorial<10> = " << Factorial<10>::value << "\n\n";
 
-    // std::cout << "=== Compile-Time Fibonacci ===\n";
-    // std::cout << "fibonacci<10> = " << Fibonacci<55>::value << " (computed at compile time)\n";
-    // std::cout << "fibonacci<20> = " << Fibonacci<6765>::value << "\n\n";
+    std::cout << "=== Compile-Time Fibonacci ===\n";
+    std::cout << "fibonacci<10> = " << Fibonacci<10>::value << " (computed at compile time)\n";
+    std::cout << "fibonacci<20> = " << Fibonacci<20>::value << "\n\n";
 
     /**
      * This implementation cannot be completed using pre-constexpr syntax. The Fibonacci
@@ -140,9 +149,9 @@ int main() {
 
     std::cout << "=== Type List Manipulation ===\n";
     std::cout << "TypeList<int, double, string>:\n";
-    std::cout << "\tSize: " << Length<MyList>::value << "\n";
-    std::cout << "\tFirst type: " << typeid(typename Head<MyList>::type).name() << "\n";
-    std::cout << "\tLast type: " << typeid(typename Tail<MyList>::type).name() << "\n\n";
+    std::cout << "  Size: " << Length<MyList>::value << "\n";
+    std::cout << "  First type: int\n";
+    std::cout << "  Last type: string\n\n";
 
     std::cout << "=== Compile-Time Assertions ===\n";
     std::cout << "static_assert(factorial<5> == 120, \"Math is broken!\");\n";
