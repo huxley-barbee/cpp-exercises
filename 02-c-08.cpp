@@ -64,6 +64,7 @@ getSize(const T& thing) {
     std::cout << "Size: 1 (default)\n";
 }
 
+/*
 template <typename T>
 std::enable_if_t<has_size_method<T>::value, void>
 isContainer(const T& thing) {
@@ -75,6 +76,17 @@ std::enable_if_t<!has_size_method<T>::value, void>
 isContainer(const T& thing) {
     std::cout << "false";
 }
+*/
+
+template <typename T, typename = void>
+struct isContainer : std::false_type {};
+
+template <typename T>
+struct isContainer<T, std::void_t<
+        decltype(std::declval<T>().begin()),
+        decltype(std::declval<T>().end()),
+        typename T::value_type
+>> : std::true_type {};
 
 int main() {
 
@@ -101,22 +113,18 @@ int main() {
     getSize(47);
     std::cout << "\n";
 
-    std::cout << "\n";
-
     std::cout << "=== is_container Trait ===\n";
-    std::vector<int> vi;
     std::cout << "std::vector<int> is container: ";
-    isContainer(vi);
+    std::cout << std::boolalpha << isContainer<std::vector<int>>::value;
     std::cout << "\n";
-    std::list<double> ld;
     std::cout << "std::list<double> is container: ";
-    isContainer(ld);
+    std::cout << std::boolalpha << isContainer<std::list<double>>::value;
     std::cout << "\n";
     std::cout << "int is container: ";
-    isContainer(47);
+    std::cout << std::boolalpha << isContainer<int>::value;
     std::cout << "\n";
     std::cout << "std::string is container: ";
-    isContainer("yo");
+    std::cout << std::boolalpha << isContainer<std::string>::value;
     std::cout << "\n";
 
     std::cout << "\n";
