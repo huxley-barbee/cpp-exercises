@@ -80,7 +80,7 @@ concept Container = requires(U c) {
  */
 
 template<Container U>
-size_t processContainer(U c) {
+size_t processContainer(const U& c) {
     return c.size();
 }
 
@@ -90,7 +90,7 @@ int main() {
     std::cout << "\n";
 
     std::cout <<
-        R"EOF(Concept: Addable\n";
+        R"EOF(Concept: Addable
 template<typename T>
 concept Addable = requires(T a, T b) {
     { a + b } -> std::same_as<T>;
@@ -99,6 +99,8 @@ concept Addable = requires(T a, T b) {
 
     std::cout << "add(5, 10) = " << add (5, 10) << " (int satisfies Addable)\n";
     std::cout << "add(3.14, 2.71) = " << add (3.14, 2.71) << " (double satisfies Addable)\n";
+
+    std::cout << "\n";
 
     std::cout <<
         R"EOF(Concept: Container
@@ -113,7 +115,7 @@ concept Container = requires(T c) {
     std::vector<int> numbers = { 1, 2, 3, 4, 5 };
     std::list<std::string> strings = { "lorem", "ipsum", "dolor" };
 
-    std::cout << "processContainer(vector<int>): size = " << processContainer(numbers) << "(satisfies Container)\n";
+    std::cout << "processContainer(vector<int>): size = " << processContainer(numbers) << " (satisfies Container)\n";
     std::cout << "processContainer(list<string>): size = " << processContainer(strings) << " (satisfies Container)\n";
 
     std::cout <<
