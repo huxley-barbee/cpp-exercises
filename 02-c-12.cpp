@@ -77,7 +77,7 @@ class RegularBase {
         virtual void speak() = 0;
 };
 
-class RegularDog : RegularBase {
+class RegularDog : public RegularBase {
     public:
         void speak() override {
             std::cout << "Woof!\n";
@@ -96,9 +96,8 @@ class Base {
 };
 
 class Derived : public Base<Derived> {
-
-     void implementation() { /* ... */ }
-};
+ //     void implementation() { /* ... */ }
+ };
 
 === Static Polymorphism ===
 Calling through CRTP:
@@ -139,7 +138,7 @@ No virtual functions - direct call at compile time!
 
     std::cout << "CRTP calls (1M iterations): " << diff_ms2 << "ms\n";
 
-    std::cout << "CRTP is ~" << std::fixed << std::setprecision(2) << (double)diff_ms1 / diff_ms2 << "x faster (no vtable lookup)\n";
+    std::cout << "CRTP is ~" << std::fixed << std::setprecision(2) << (double)diff_ms1 / std::max(diff_ms2, 1LL) << "x faster (no vtable lookup)\n";
 
     std::cout <<
         R"EOF(
