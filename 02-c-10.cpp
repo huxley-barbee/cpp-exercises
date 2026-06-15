@@ -48,13 +48,14 @@
 #include <list>
 #include <vector>
 
-template<typename... Args>
-void print(Args&&... args) {
-    ((std::cout << args << ' '), ...);
+template<typename First, typename... Args>
+void print(First first, Args&&... args) {
+    std::cout << first;
+    ((std::cout << ' ' << args), ...);
 }
 
 template<typename... Args>
-int count(Args... args) {
+int count(Args&&... args) {
     return sizeof...(args);
 }
 
@@ -64,18 +65,32 @@ auto sum(Args... args) {
 }
 
 template<typename... Args>
-int foldSum(Args... args) {
+auto foldSum(Args... args) {
     return (args + ... + 0);
 }
 
 template<typename... Args>
-int foldProduct(Args... args) {
+auto foldProduct(Args... args) {
     return (1 * ... * args);
 }
 
 template<typename... Ts>
 class MyClass {
-    static constexpr std::size_t size = sizeof...(Ts);
+    private:
+        int _i;
+        double _d;
+        std::string _s;
+
+    public:
+        static constexpr std::size_t size = sizeof...(Ts);
+        void storeInt(const int& i) { _i = i; }
+        void storeDouble(const double& d) { _d = d; }
+        void storeString(const std::string& s) { _s = s; }
+        void print() {
+            std::cout << "  Element 0: " << _i << "\n";
+            std::cout << "  Element 1: " << _d << "\n";
+            std::cout << "  Element 2: \"" << _s << "\"\n";
+        }
 };
 
 
@@ -108,17 +123,19 @@ int main() {
 
     std::cout << "\n";
 
+    MyClass<int, double, std::string>* vObj = new MyClass<int, double, std::string>();
+    vObj->storeInt(42);
+    vObj->storeDouble(3.14);
+    vObj->storeString("hello");
+
     std::cout <<
-        R"EOF("=== Variadic Class Template ===\n";
+        R"EOF(=== Variadic Class Template ===
 Tuple<int, double, string>:
-  Element 0: 42
-  Element 1: 3.14
-  Element 2: "hello"
-  )EOF";
+)EOF";
 
-    MyClass<int, double, std::string> obj;
+    vObj->print();
 
-    std::cout << "Size: " << sizeof(obj) << "\n";
+    std::cout << "  Size: " << MyClass<int, double, std::string>::size  << "\n";
 
     std::cout << "\nVariadic templates enable flexible argument lists!\n";
 }
